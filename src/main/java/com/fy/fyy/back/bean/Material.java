@@ -1,119 +1,121 @@
 package com.fy.fyy.back.bean;
 
-public class Material {
-	
-	private Long id;
-	private String name;
-	private Category category;
-	private Unit unit;
-	private Integer num;
-	private String note;
-	
-	
-	
-	public Long getId() {
-		return id;
-	}
+import java.sql.Date;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
-	public Category getCategory() {
-		return category;
-	}
+public class Material extends BaseBean {
 
-	public void setCategory(Category category) {
-		this.category = category;
-	}
+  private String name;
+  private Category category;
+  private Integer categoryId;
+  private Unit unit;
+  private Integer unitId;
+  private Integer num;
+  private String note;
+  private Date createDate;
+  private Date updateDate;
 
-	public Unit getUnit() {
-		return unit;
-	}
+  public static Material getInstance( Integer id ) {
+    Material marterial = new Material();
+    marterial.setId( id );
+    return marterial;
+  }
 
-	public void setUnit(Unit unit) {
-		this.unit = unit;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public Integer getNum() {
-		return num;
-	}
+  public void setName( String name ) {
+    this.name = name;
+  }
 
-	public void setNum(Integer num) {
-		this.num = num;
-	}
+  public Category getCategory() {
+    return category;
+  }
 
-	public String getNote() {
-		return note;
-	}
+  public void setCategory( Category category ) {
+    this.category = category;
+  }
 
-	public void setNote(String note) {
-		this.note = note;
-	}
+  public Integer getCategoryId() {
+    return categoryId;
+  }
 
-	public static enum Category {
-		outer_package(1, "外包装"), inner_package(2, "内包装"), desiccant(3, "干燥剂");
+  public void setCategoryId( Integer categoryId ) {
+    this.categoryId = categoryId;
+    setCategory( (Category)Category.getMap().get( categoryId ) );
+  }
 
-		private int id;
-		private String name;
+  public Unit getUnit() {
+    return unit;
+  }
 
-		private Category(int id, String name) {
-			this.id = id;
-			this.name = name;
-		}
+  public void setUnit( Unit unit ) {
+    this.unit = unit;
+  }
 
-		public int getId() {
-			return id;
-		}
+  public Integer getUnitId() {
+    return unitId;
+  }
 
-		public void setId(int id) {
-			this.id = id;
-		}
+  public void setUnitId( Integer unitId ) {
+    this.unitId = unitId;
+    setUnit( (Unit)Unit.getMap().get( unitId ) );
+  }
 
-		public String getName() {
-			return name;
-		}
+  public Integer getNum() {
+    return num;
+  }
 
-		public void setName(String name) {
-			this.name = name;
-		}
+  public void setNum( Integer num ) {
+    this.num = num;
+  }
 
-	}
-	
-	public static enum Unit {
-		unit_per(1, "个"), unit_kg(2, "公斤"), unit_package(3, "箱");
+  public String getNote() {
+    return note;
+  }
 
-		private int id;
-		private String name;
+  public void setNote( String note ) {
+    this.note = note;
+  }
 
-		private Unit(int id, String name) {
-			this.id = id;
-			this.name = name;
-		}
+  public Date getCreateDate() {
+    return createDate;
+  }
 
-		public int getId() {
-			return id;
-		}
+  public void setCreateDate( Date createDate ) {
+    this.createDate = createDate;
+  }
 
-		public void setId(int id) {
-			this.id = id;
-		}
+  public Date getUpdateDate() {
+    return updateDate;
+  }
 
-		public String getName() {
-			return name;
-		}
+  public void setUpdateDate( Date updateDate ) {
+    this.updateDate = updateDate;
+  }
 
-		public void setName(String name) {
-			this.name = name;
-		}
+  public static class Category extends CodeBean {
 
-	}
+    public static final Category outer = new Category( 1, "外包装" );
+    public static final Category inner = new Category( 2, "内包装" );
+    public static final Category desiccant = new Category( 3, "干燥剂" );
+
+    private Category( int id, String name ) {
+      super( id, name );
+    }
+  }
+
+  public static class Unit extends CodeBean {
+
+    public static final Unit per = new Unit( 1, "个" );
+    public static final Unit kg = new Unit( 2, "公斤" );
+    public static final Unit pkg = new Unit( 3, "箱" );
+
+    private Unit( int id, String name ) {
+      super( id, name );
+    }
+  }
 }

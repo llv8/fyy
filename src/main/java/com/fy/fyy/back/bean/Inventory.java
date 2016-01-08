@@ -1,106 +1,118 @@
 package com.fy.fyy.back.bean;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class Inventory {
 
-	private Long id;
-	private Date createDate;
-	private Type type;
-	private User user;
-	private Material material;
-	private Integer num;
-	private String note;
 
-	public static Inventory getInstance(Long id) {
-		Inventory inv = new Inventory();
-		inv.setId(id);
-		return inv;
-	}
 
-	public Long getId() {
-		return id;
-	}
+public class Inventory extends BaseBean {
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+  private Date createDate;
+  private Date updateDate;
+  private Type type;
+  private Integer typeId;
+  private User user;
+  private Integer userId;
+  private Material material;
+  private Integer materialId;
+  private Integer num;
+  private String note;
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+  public static Inventory getInstance( Integer id ) {
+    Inventory inv = new Inventory();
+    inv.setId( id );
+    return inv;
+  }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+  public Date getUpdateDate() {
+    return updateDate;
+  }
 
-	public Type getType() {
-		return type;
-	}
+  public void setUpdateDate( Date updateDate ) {
+    this.updateDate = updateDate;
+  }
 
-	public void setType(Type type) {
-		this.type = type;
-	}
+  public Integer getUserId() {
+    return userId;
+  }
 
-	public User getUser() {
-		return user;
-	}
+  public void setUserId( Integer userId ) {
+    this.userId = userId;
+  }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+  public Integer getMaterialId() {
+    return materialId;
+  }
 
-	public Material getMaterial() {
-		return material;
-	}
+  public void setMaterialId( Integer materialId ) {
+    this.materialId = materialId;
+    CachedBean.get().getValue( Material.getInstance( materialId ) );
+  }
 
-	public void setMaterial(Material material) {
-		this.material = material;
-	}
+  public Date getCreateDate() {
+    return createDate;
+  }
 
-	public Integer getNum() {
-		return num;
-	}
+  public void setCreateDate( Date createDate ) {
+    this.createDate = createDate;
+  }
 
-	public void setNum(Integer num) {
-		this.num = num;
-	}
+  public Type getType() {
+    return type;
+  }
 
-	public String getNote() {
-		return note;
-	}
+  public void setType( Type type ) {
+    this.type = type;
+  }
 
-	public void setNote(String note) {
-		this.note = note;
-	}
+  public User getUser() {
+    return user;
+  }
 
-	public static enum Type {
-		in(1, "入库"), out(2, "出库");
+  public void setUser( User user ) {
+    this.user = user;
+  }
 
-		private int id;
-		private String name;
+  public Material getMaterial() {
+    return material;
+  }
 
-		private Type(int id, String name) {
-			this.id = id;
-			this.name = name;
-		}
+  public void setMaterial( Material material ) {
+    this.material = material;
+  }
 
-		public int getId() {
-			return id;
-		}
+  public Integer getNum() {
+    return num;
+  }
 
-		public void setId(int id) {
-			this.id = id;
-		}
+  public void setNum( Integer num ) {
+    this.num = num;
+  }
 
-		public String getName() {
-			return name;
-		}
+  public String getNote() {
+    return note;
+  }
 
-		public void setName(String name) {
-			this.name = name;
-		}
+  public void setNote( String note ) {
+    this.note = note;
+  }
 
-	}
+  public Integer getTypeId() {
+    return typeId;
+  }
+
+  public void setTypeId( Integer typeId ) {
+    this.typeId = typeId;
+  }
+
+  public static class Type extends CodeBean {
+
+    public static final Type in = new Type( 1, "入库" );
+    public static final Type out = new Type( 2, "出库" );
+
+    private Type( int id, String name ) {
+      super( id, name );
+    }
+  }
 
 }
