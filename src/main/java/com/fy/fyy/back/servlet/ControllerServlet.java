@@ -26,15 +26,11 @@ public class ControllerServlet extends HttpServlet {
     //invoke action
     Pair<String, TYPE> pair = ServletUtil.exec( req );
     //forward or redirect
-    if ( pair.getRight() == TYPE.forwrad ) {
-      req.getRequestDispatcher( pair.getLeft() ).forward( req, resp );
-    }
-    else if ( pair.getRight() == TYPE.redirect ) {
-      resp.sendRedirect( pair.getLeft() );
-    }
+    ServletUtil.go(pair.getLeft(),pair.getRight(),req,resp);
 
   }
 
+  
   public static void go404( HttpServletResponse resp ) {
     try {
       resp.sendRedirect( "404.jsp" );

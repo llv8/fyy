@@ -14,12 +14,19 @@ public class UserAction {
   public String login() {
     User user = userService.login( this.user );
     if ( user == null ) {
-
+      return "User.loginPage";
     }
     else {
-
+      return "User.indexPage";
     }
-    return "";
+  }
+  
+  public String loginPage(){
+    return "login.jsp";
+  }
+  
+  public String indexPage(){
+    return "index.jsp";
   }
 
   public User getUser() {
