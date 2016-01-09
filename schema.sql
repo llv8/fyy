@@ -11,10 +11,12 @@ create table User(
  updateDate DATE,
  email varchar(100) not null,
  phone varchar(40) not null,
- department int(1) not null
+ departmentId int(1) not null,
+ statusId int(1) not null
 
 );
 
+insert into User (userName,loginName,password,createDate,updateDate,email,phone,departmentId,statusId) values('lw','lw','123',now(),now(),'lvwen2046@gmail.com','18161907873',1,1);
 
 create table Material(
  id int(10) not null primary key auto_increment,

@@ -10,11 +10,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface To {
+public @interface Redirect {
 
-  public enum TYPE {
-    forwrad, redirect
-  }
-
-  TYPE value() default TYPE.forwrad;
 }

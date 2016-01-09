@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.fy.fyy.back.action.To.TYPE;
-
 
 public class ControllerServlet extends HttpServlet {
 
   private static final long serialVersionUID = -423807766712107605L;
+  private static final String R404 = "404.jsp";
+  private static final String R500 = "500.jsp";
 
   @Override
   protected void doGet( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
@@ -24,16 +24,14 @@ public class ControllerServlet extends HttpServlet {
   @Override
   protected void doPost( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
     //invoke action
-    Pair<String, TYPE> pair = ServletUtil.exec( req );
+    Pair<String, Boolean> pair = ServletUtil.exec( req );
     //forward or redirect
-    ServletUtil.go(pair.getLeft(),pair.getRight(),req,resp);
-
+    ServletUtil.go( pair.getLeft(), pair.getRight(), req, resp );
   }
 
-  
   public static void go404( HttpServletResponse resp ) {
     try {
-      resp.sendRedirect( "404.jsp" );
+      resp.sendRedirect( R404 );
     }
     catch ( IOException e ) {
       // TODO Auto-generated catch block
@@ -43,7 +41,7 @@ public class ControllerServlet extends HttpServlet {
 
   public static void go500( HttpServletResponse resp ) {
     try {
-      resp.sendRedirect( "500.jsp" );
+      resp.sendRedirect( R500 );
     }
     catch ( IOException e ) {
       // TODO Auto-generated catch block

@@ -1,32 +1,33 @@
 package com.fy.fyy.back.action;
 
-import com.fy.fyy.back.action.To.TYPE;
 import com.fy.fyy.back.bean.User;
 import com.fy.fyy.back.service.UserService;
+import com.fy.fyy.back.servlet.ServletUtil;
 
 
-public class UserAction {
+public class UserAction extends BaseAction {
 
   private User user = new User();
   private UserService userService = new UserService();
 
-  @To(TYPE.redirect)
+  @Redirect
   public String login() {
     User user = userService.login( this.user );
     if ( user == null ) {
-      return "User.loginPage";
+      return ServletUtil.LOGIN_UI;
     }
     else {
-      return "User.indexPage";
+      getSessionAttrs().put( ServletUtil.LOGIN_FLAG, true );
+      return ServletUtil.INDEX_UI;
     }
   }
-  
-  public String loginPage(){
-    return "login.jsp";
+
+  public String loginUI() {
+    return "/login.jsp";
   }
-  
-  public String indexPage(){
-    return "index.jsp";
+
+  public String indexUI() {
+    return "/index.jsp";
   }
 
   public User getUser() {
