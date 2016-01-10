@@ -5,3 +5,6 @@
   String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <base href="<%=basePath%>">
+<script src="js/jquery-2.1.4.js" type="text/javascript"></script>
+<script src="js/common.js" type="text/javascript"></script>
+<link rel=StyleSheet href="css/common.css" type="text/css" />

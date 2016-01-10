@@ -36,4 +36,15 @@ public class UserService extends BaseService<User> {
     return result;
   }
 
+  public List<User> list( User user ) {
+    List<User> list = getList( user, new QuerySqlStr<User>() {
+
+      @Override
+      public String get( User bean ) {
+        return "";
+      }
+    } );
+    return list;
+  }
+
 }

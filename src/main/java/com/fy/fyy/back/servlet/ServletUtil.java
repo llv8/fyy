@@ -3,6 +3,7 @@ package com.fy.fyy.back.servlet;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,8 +23,9 @@ import com.fy.fyy.back.common.StrUtil;
 public class ServletUtil extends HttpServlet {
 
   private static final String PKG_ACTION = "com.fy.fyy.back.action.";
-  public static final String LOGIN_FLAG = "loginFlag";
+  public static final String LOGIN_USER = "loginUser";
   public static final String LOGIN_UI = "/loginUI/User.Action";
+  public static final String LOGIN = "/login/User.Action";
   public static final String INDEX_UI = "/indexUI/User.Action";
 
   public static String getURI( HttpServletRequest req ) {
@@ -55,12 +57,35 @@ public class ServletUtil extends HttpServlet {
     }
   }
 
-  private static void copySessionAttrs( BaseAction action, HttpServletRequest req ) {
-    Enumeration<String> attrNames = req.getSession().getAttributeNames();
-    while ( attrNames.hasMoreElements() ) {
-      String attrName = attrNames.nextElement();
-      Object attrValue = req.getSession().getAttribute( attrName );
-      action.getSessionAttrs().put( attrName, attrValue );
+  private static void copyAttrs( HttpServletRequest req, BaseAction action ) {
+    Enumeration<String> sessionAttrNames = req.getSession().getAttributeNames();
+    while ( sessionAttrNames.hasMoreElements() ) {
+      String sessionAttrName = sessionAttrNames.nextElement();
+      Object sessionAttrValue = req.getSession().getAttribute( sessionAttrName );
+      action.getSessionAttrs().put( sessionAttrName, sessionAttrValue );
+    }
+
+    Enumeration<String> requestAttrNames = req.getAttributeNames();
+    while ( requestAttrNames.hasMoreElements() ) {
+      String requestAttrName = requestAttrNames.nextElement();
+      Object requestAttrValue = req.getSession().getAttribute( requestAttrName );
+      action.getSessionAttrs().put( requestAttrName, requestAttrValue );
+    }
+  }
+
+  private static void copyAttrs( BaseAction action, HttpServletRequest req ) {
+    Map<String, Object> sessionMap = action.getSessionAttrs();
+    if ( !sessionMap.isEmpty() ) {
+      for ( Map.Entry<String, Object> entry : sessionMap.entrySet() ) {
+        req.getSession().setAttribute( entry.getKey(), entry.getValue() );
+      }
+    }
+
+    Map<String, Object> requestMap = action.getRequestAttrs();
+    if ( !requestMap.isEmpty() ) {
+      for ( Map.Entry<String, Object> entry : requestMap.entrySet() ) {
+        req.setAttribute( entry.getKey(), entry.getValue() );
+      }
     }
   }
 
@@ -70,11 +95,13 @@ public class ServletUtil extends HttpServlet {
     try {
       BaseAction action = (BaseAction)Class.forName( PKG_ACTION + class2Method.getLeft() ).newInstance();
 
-      copySessionAttrs( action, req );
+      copyAttrs( req, action );
 
       BeanUtils.populate( action, req.getParameterMap() );
       Method method = action.getClass().getMethod( class2Method.getRight() );
       Object uriObj = method.invoke( action );
+
+      copyAttrs( action, req );
 
       return new MutablePair<String, Boolean>( uriObj.toString(), method.getAnnotation( Redirect.class ) != null );
     }

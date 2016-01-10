@@ -1,6 +1,7 @@
 package com.fy.fyy.back.servlet;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,8 +28,13 @@ public class LoginFilter implements Filter {
     HttpServletRequest httpReq = (HttpServletRequest)req;
     HttpServletResponse httpResp = (HttpServletResponse)resp;
 
-    if ( httpReq.getSession().getAttribute( ServletUtil.LOGIN_FLAG ) == null && !ServletUtil.LOGIN_UI.equals( ServletUtil.getURI( httpReq ) ) ) {
-      ServletUtil.go( ServletUtil.LOGIN_UI, true, httpReq, httpResp );
+    if ( httpReq.getSession().getAttribute( ServletUtil.LOGIN_USER ) == null && !ServletUtil.LOGIN_UI.equals( ServletUtil.getURI( httpReq ) )
+        && !ServletUtil.LOGIN.equals( ServletUtil.getURI( httpReq ) ) ) {
+      String str = "<script type='text/javascript'>top.location.href='/fyy" + ServletUtil.LOGIN_UI + "'</script>";
+      httpResp.setHeader( "Content-type", "text/html;charset=UTF-8" );
+      OutputStream stream = httpResp.getOutputStream();
+      stream.write( str.getBytes( "UTF-8" ) );
+      stream.close();
     }
     else {
       chain.doFilter( req, resp );

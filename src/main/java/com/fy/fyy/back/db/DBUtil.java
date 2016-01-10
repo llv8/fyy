@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -23,6 +24,8 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 public class DBUtil {
 
   private static Logger logger = LoggerFactory.getLogger( DBUtil.class );
+  private static final String QUERY = "select * from %s where 1=1";
+  private static final String QUERY_COUNT = "select count(0) from (%s) abc";
   private static ComboPooledDataSource dataSource;
   static {
     try {
@@ -55,12 +58,24 @@ public class DBUtil {
     return conn;
   }
 
+  public static String getSQL( Class<?> clazz ) {
+    return String.format( QUERY, clazz.getSimpleName() );
+  }
+
   public static <T extends BaseBean> List<T> queryBeanList( String sql, T bean ) {
     Connection conn = getConn();
     try {
+      if ( bean.getPageInfo().isPageFlag() ) {
+        Long count = new QueryRunner().query( getConn(), String.format( QUERY_COUNT, sql ), new ScalarHandler<Long>(), bean.getQueryParams().toArray() );
+        bean.getPageInfo().setCountRecord( count.intValue() );
+      }
+      if ( bean.getPageInfo().isPageFlag() ) {
+        sql = sql + " limit  " + bean.getPageInfo().getPageSize() * ( bean.getPageInfo().getCurrentPageNum() - 1 ) + " , " + bean.getPageInfo().getPageSize() + " ";
+      }
       return new QueryRunner().query( getConn(), sql, getBeanListHandler( bean ), bean.getQueryParams().toArray() );
     }
     catch ( Exception e ) {
+      e.printStackTrace();
       logger.error( "query failure!" );
       return null;
     }
@@ -102,7 +117,7 @@ public class DBUtil {
 
   public static <T extends BaseBean> T getObjById( T bean ) {
     String tableName = bean.getClass().getSimpleName();
-    String sql = "select * from " + tableName + " where id = ?";
+    String sql = getSQL( bean.getClass() ) + " and id=?";
     List<T> list = queryBeanList( sql, bean );
     if ( CollectionUtils.isEmpty( list ) ) {
       return null;

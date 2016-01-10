@@ -9,9 +9,14 @@ import com.fy.fyy.back.servlet.ServletUtil;
 public class BaseAction {
 
   private Map<String, Object> sessionAttrs = new HashMap<String, Object>();
+  private Map<String, Object> requestAttrs = new HashMap<String, Object>();
 
   public Map<String, Object> getSessionAttrs() {
     return sessionAttrs;
+  }
+
+  public Map<String, Object> getRequestAttrs() {
+    return requestAttrs;
   }
 
   /**

@@ -8,6 +8,7 @@ public class BaseBean {
 
   private Integer id;
   private List<Object> queryParams = new ArrayList<>();
+  private PageInfo pageInfo = new PageInfo();
 
   public Integer getId() {
     return id;
@@ -19,6 +20,10 @@ public class BaseBean {
 
   public List<Object> getQueryParams() {
     return queryParams;
+  }
+
+  public PageInfo getPageInfo() {
+    return pageInfo;
   }
 
 }

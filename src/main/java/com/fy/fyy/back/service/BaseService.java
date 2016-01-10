@@ -13,12 +13,15 @@ public class BaseService<T extends BaseBean> {
 
   private static Logger logger = LoggerFactory.getLogger( BaseService.class );
 
-  public List<T> getList( T bean, QuerySqlStr<T> querySqlStr ) {
+  protected List<T> getList( T bean, QuerySqlStr<T> querySqlStr ) {
     List<T> result = null;
-    StringBuffer sb = new StringBuffer();
-    sb.append( "selet * from " + bean.getClass().getSimpleName() + " where 1=1 " );
+    StringBuffer sb = new StringBuffer( DBUtil.getSQL( bean.getClass() ) );
     if ( querySqlStr != null ) sb.append( querySqlStr.get( bean ) );
     result = DBUtil.queryBeanList( sb.toString(), bean );
+    if ( bean.getPageInfo().isPageFlag() ) {
+      bean.getPageInfo().setCountPage(
+          bean.getPageInfo().getCountRecord() / bean.getPageInfo().getPageSize() + bean.getPageInfo().getCountRecord() % bean.getPageInfo().getPageSize() == 0 ? 0 : 1 );
+    }
     return result;
   }
 
