@@ -12,85 +12,35 @@
 </head>
 
 <body>
-	<table width="100%" border="0" cellspacing="0" cellpadding="0"
-		style="table-layout: fixed;">
-		<tr>
-			<td height="9"
-				style="line-height: 9px; background-image: url(images/main_04.gif)"><table
-					width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td width="97" height="9" background="images/main_01.gif">&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-					</tr>
-				</table></td>
-		</tr>
-		<tr>
-			<td height="47" background="images/main_09.gif"><table
-					width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td width="38" height="47" background="images/main_06.gif">&nbsp;</td>
-						<td width="59"><table width="100%" border="0" cellspacing="0"
-								cellpadding="0">
-								<tr>
-									<td height="29" background="images/main_07.gif">&nbsp;</td>
-								</tr>
-								<tr>
-									<td height="18" background="images/main_14.gif"><table
-											width="100%" border="0" cellspacing="0" cellpadding="0"
-											style="table-layout: fixed;">
-											<tr>
-												<td style="width: 1px;">&nbsp;</td>
-												<td><span class="tip_color">${ loginUser.userName }</span></td>
-											</tr>
-										</table></td>
-								</tr>
-							</table></td>
-						<td width="155" background="images/main_08.gif">&nbsp;</td>
-						<td><table width="100%" border="0" cellspacing="0"
-								cellpadding="0">
-								<tr>
-									<td height="23" valign="bottom"><img
-										src="images/main_12.gif" width="367" height="23" border="0"
-										usemap="#Map" /></td>
-								</tr>
-							</table></td>
-						<td width="200" background="images/main_11.gif"><table
-								width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-									<td width="11%" height="23">&nbsp;</td>
-									<td width="89%" valign="bottom"><span class="tip_color"><%=DateFormatUtils.format( new Date(), "yyyy-MM-dd" )%></span></td>
-								</tr>
-							</table></td>
-					</tr>
-				</table></td>
-		</tr>
-		<tr>
-			<td height="5"
-				style="line-height: 5px; background-image: url(images/main_18.gif)"><table
-					width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td width="180" background="images/main_16.gif"
-							style="line-height: 5px;">&nbsp;</td>
-						<td>&nbsp;</td>
-					</tr>
-				</table></td>
-		</tr>
-	</table>
-
-	<map name="Map" id="Map">
-		<area shape="rect" coords="3,1,49,22" href="javascript:;"
-			onclick="top.location.href='indexUI/User.Action'" />
-		<area shape="rect" coords="52,2,95,21" href="javascript:;"
-			onclick="top.frames['mainFrame'].frames[1].history.back()" />
-		<area shape="rect" coords="102,2,144,21" href="javascript:;"
-			onclick="top.frames['mainFrame'].frames[1].history.go()" />
-		<area shape="rect" coords="150,1,197,22" href="javascript:;"
-			onclick="top.location.href='indexUI/User.Action'" />
-		<area shape="rect" coords="210,2,304,20" href="javascript:;"
-			onclick="top.location.href='unLogin/User.Action'" />
-		<area shape="rect" coords="314,1,361,23" href="javascript:;"
-			onclick="top.location.href='unLogin/User.Action'" />
-	</map>
+	<img class="top_top" src="images/top/top.gif">
+		<div class="top_main">
+			<img src="images/top/center1.gif">
+				<div>
+					<img src="images/top/center2.gif">
+						<div id="customer">
+							<span class="tip_color">${ loginUser.userName }</span>
+						</div>
+				</div> <img src="images/top/center4.gif">
+					<div class="top_action">
+						<img src="images/top/center5.gif" usemap="#Map">
+					</div>
+					<div id="top_time">
+						<span class="tip_color"><%=DateFormatUtils.format( new Date(), "yyyy-MM-dd" )%></span>
+					</div>
+		</div> <img class="top_bottom" src="images/top/bottom.gif"> <map
+				name="Map" id="Map">
+				<area shape="rect" coords="3,1,49,22" href="javascript:;"
+					onclick="top.location.href='indexUI/User.Action'" />
+				<area shape="rect" coords="52,2,95,21" href="javascript:;"
+					onclick="top.frames['mainFrame'].frames[1].history.back()" />
+				<area shape="rect" coords="102,2,144,21" href="javascript:;"
+					onclick="top.frames['mainFrame'].frames[1].history.go()" />
+				<area shape="rect" coords="150,1,197,22" href="javascript:;"
+					onclick="top.location.href='indexUI/User.Action'" />
+				<area shape="rect" coords="210,2,304,20" href="javascript:;"
+					onclick="top.location.href='unLogin/User.Action'" />
+				<area shape="rect" coords="314,1,361,23" href="javascript:;"
+					onclick="top.location.href='unLogin/User.Action'" />
+			</map>
 </body>
 </html>
