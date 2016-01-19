@@ -3,8 +3,6 @@ package com.fy.fyy.back.bean;
 import java.sql.Date;
 
 
-
-
 public class Material extends BaseBean {
 
   private String name;
@@ -45,7 +43,7 @@ public class Material extends BaseBean {
 
   public void setCategoryId( Integer categoryId ) {
     this.categoryId = categoryId;
-    setCategory( (Category)Category.getMap().get( categoryId ) );
+    setCategory( CodeBean.get( Category.class, categoryId ) );
   }
 
   public Unit getUnit() {
@@ -62,7 +60,7 @@ public class Material extends BaseBean {
 
   public void setUnitId( Integer unitId ) {
     this.unitId = unitId;
-    setUnit( (Unit)Unit.getMap().get( unitId ) );
+    setUnit( CodeBean.get( Unit.class, unitId ) );
   }
 
   public Integer getNum() {

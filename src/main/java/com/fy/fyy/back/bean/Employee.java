@@ -3,24 +3,22 @@ package com.fy.fyy.back.bean;
 import java.sql.Date;
 
 
-
-
-public class User extends BaseBean {
+public class Employee extends BaseBean {
 
   private String userName;
-  private String loginName;
-  private String password;
   private Date createDate;
   private Date updateDate;
   private Status status;
   private Integer statusId;
   private String email;
   private String phone;
+  private Position position;
+  private Integer positionId;
   private Department department;
   private Integer departmentId;
 
-  public static User getInstance( Integer id ) {
-    User usr = new User();
+  public static Employee getInstance( Integer id ) {
+    Employee usr = new Employee();
     usr.setId( id );
     return usr;
   }
@@ -33,20 +31,21 @@ public class User extends BaseBean {
     this.userName = userName;
   }
 
-  public String getLoginName() {
-    return loginName;
+  public Position getPosition() {
+    return position;
   }
 
-  public void setLoginName( String loginName ) {
-    this.loginName = loginName;
+  public void setPosition( Position position ) {
+    this.position = position;
   }
 
-  public String getPassword() {
-    return password;
+  public Integer getPositionId() {
+    return positionId;
   }
 
-  public void setPassword( String password ) {
-    this.password = password;
+  public void setPositionId( Integer positionId ) {
+    this.positionId = positionId;
+    this.setPosition( CodeBean.get( Position.class, positionId ) );
   }
 
   public Date getCreateDate() {
@@ -103,6 +102,7 @@ public class User extends BaseBean {
 
   public void setStatusId( Integer statusId ) {
     this.statusId = statusId;
+    this.setStatus( CodeBean.get( Status.class, statusId ) );
   }
 
   public Integer getDepartmentId() {
@@ -111,7 +111,9 @@ public class User extends BaseBean {
 
   public void setDepartmentId( Integer departmentId ) {
     this.departmentId = departmentId;
+    this.setDepartment( CodeBean.get( Department.class, departmentId ) );
   }
+
 
   public static class Status extends CodeBean {
 
@@ -131,6 +133,17 @@ public class User extends BaseBean {
     public static final Department inventory = new Department( 4, "库管部门" );
 
     private Department( int id, String name ) {
+      super( id, name );
+    }
+  }
+
+  public static class Position extends CodeBean {
+
+    public static final Position manager = new Position( 1, "部门经理" );
+    public static final Position staff = new Position( 2, "职员" );
+    public static final Position admin = new Position( 3, "管理员" );
+
+    private Position( int id, String name ) {
       super( id, name );
     }
   }

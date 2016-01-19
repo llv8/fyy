@@ -9,15 +9,15 @@
 </head>
 
 <body>
-	<form id="loginForm" action="login/User.Action" method="post">
+	<form id="loginForm" action="login/Customer.Action" method="post">
 		<div id="login_main">
 			<div id="login_container">
-				<img src="images/login/top.gif"> <img class='login_left' src="images/login/left.gif">
+				<img src="images/login/top.gif"> <img class='login_left'
+					src="images/login/left.gif">
 				<div class='login_center'>
 					<span class="tip_color">用户</span> <input type="text"
-						name="user.loginName">
-					<span class="tip_color">密码</span> <input type="password"
-						name="user.password">
+						name="customer.loginName"> <span class="tip_color">密码</span> <input
+						type="password" name="customer.password">
 					<div class="login_action">
 						<img src="images/login/dl.gif" usemap="#Map">
 						<map name="Map">

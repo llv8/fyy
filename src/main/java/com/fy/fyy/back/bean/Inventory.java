@@ -3,15 +3,13 @@ package com.fy.fyy.back.bean;
 import java.sql.Date;
 
 
-
-
 public class Inventory extends BaseBean {
 
   private Date createDate;
   private Date updateDate;
   private Type type;
   private Integer typeId;
-  private User user;
+  private Employee user;
   private Integer userId;
   private Material material;
   private Integer materialId;
@@ -65,11 +63,11 @@ public class Inventory extends BaseBean {
     this.type = type;
   }
 
-  public User getUser() {
+  public Employee getUser() {
     return user;
   }
 
-  public void setUser( User user ) {
+  public void setUser( Employee user ) {
     this.user = user;
   }
 
@@ -103,6 +101,7 @@ public class Inventory extends BaseBean {
 
   public void setTypeId( Integer typeId ) {
     this.typeId = typeId;
+    setType( CodeBean.get( Type.class, typeId ) );
   }
 
   public static class Type extends CodeBean {

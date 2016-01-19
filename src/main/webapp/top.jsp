@@ -18,7 +18,7 @@
 				<div>
 					<img src="images/top/center2.gif">
 						<div id="customer">
-							<span class="tip_color">${ loginUser.userName }</span>
+							<span class="tip_color">${ loginCustomer.loginName }</span>
 						</div>
 				</div> <img src="images/top/center4.gif">
 					<div class="top_action">

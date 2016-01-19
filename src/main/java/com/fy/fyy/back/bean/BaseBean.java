@@ -10,6 +10,12 @@ public class BaseBean {
   private List<Object> queryParams = new ArrayList<>();
   private PageInfo pageInfo = new PageInfo();
 
+  public void BeseBean( Integer id ) {
+    this.id = id;
+  }
+
+  public void BeseBean() {}
+
   public Integer getId() {
     return id;
   }

@@ -15,6 +15,10 @@ public class ControllerServlet extends HttpServlet {
   private static final long serialVersionUID = -423807766712107605L;
   private static final String R404 = "404.jsp";
   private static final String R500 = "500.jsp";
+  
+  static{
+    
+  }
 
   @Override
   protected void doGet( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {

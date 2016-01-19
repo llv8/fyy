@@ -2,7 +2,7 @@ package com.fy.fyy.back.bean;
 
 public class PageInfo {
 
-  private int pageSize = 10;
+  private int pageSize = 20;
   private int currentPageNum = 1;
   private int countRecord;
   private int countPage;

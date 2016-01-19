@@ -3,16 +3,18 @@ package com.fy.fyy.back.service;
 import java.util.List;
 
 import com.fy.fyy.back.bean.Material;
-import com.fy.fyy.back.db.DBUtil;
 
 
-public class MaterialService {
+public class MaterialService extends BaseService<Material>{
 
-  public List<Material> getList( Material material ) {
-    List<Material> result = null;
-    StringBuffer sb = new StringBuffer();
-    sb.append( "selet * from Material where 1=1 " );
-    DBUtil.queryBeanList( sb.toString(), material );
-    return result;
+  public List<Material> list( Material material ) {
+    List<Material> list = getList( material, new QuerySqlStr<Material>() {
+
+      @Override
+      public String get( Material bean ) {
+        return "";
+      }
+    } );
+    return list;
   }
 }

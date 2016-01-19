@@ -16,17 +16,17 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.fy.fyy.back.action.BaseAction;
-import com.fy.fyy.back.action.Redirect;
+import com.fy.fyy.back.action.RedirectAnnotation;
 import com.fy.fyy.back.common.StrUtil;
 
 
 public class ServletUtil extends HttpServlet {
 
   private static final String PKG_ACTION = "com.fy.fyy.back.action.";
-  public static final String LOGIN_USER = "loginUser";
-  public static final String LOGIN_UI = "/loginUI/User.Action";
-  public static final String LOGIN = "/login/User.Action";
-  public static final String INDEX_UI = "/indexUI/User.Action";
+  public static final String LOGIN_USER = "loginCustomer";
+  public static final String LOGIN_UI = "/loginUI/Customer.Action";
+  public static final String LOGIN = "/login/Customer.Action";
+  public static final String INDEX_UI = "/indexUI/Customer.Action";
 
   public static String getURI( HttpServletRequest req ) {
     return req.getRequestURI().substring( req.getContextPath().length(), req.getRequestURI().length() );
@@ -103,7 +103,7 @@ public class ServletUtil extends HttpServlet {
 
       copyAttrs( action, req );
 
-      return new MutablePair<String, Boolean>( uriObj.toString(), method.getAnnotation( Redirect.class ) != null );
+      return new MutablePair<String, Boolean>( uriObj.toString(), method.getAnnotation( RedirectAnnotation.class ) != null );
     }
     catch ( Exception e ) {
       // TODO Auto-generated catch block

@@ -2,15 +2,16 @@ package com.fy.fyy.back.db;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -32,13 +33,19 @@ public class DBUtil {
       dataSource = new ComboPooledDataSource();
       dataSource.setUser( "root" );
       dataSource.setPassword( "root" );
-      dataSource.setJdbcUrl( "jdbc:mysql://localhost:3306/fyy" );
+      dataSource.setJdbcUrl( "jdbc:mysql://localhost:3306/fyy?characterEncoding=utf-8" );
       dataSource.setDriverClass( "com.mysql.jdbc.Driver" );
       dataSource.setInitialPoolSize( 10 );
       dataSource.setMinPoolSize( 5 );
       dataSource.setMaxPoolSize( 50 );
       dataSource.setMaxStatements( 100 );
       dataSource.setMaxIdleTime( 60 );
+      dataSource.setBreakAfterAcquireFailure( false );
+      dataSource.setTestConnectionOnCheckout( false );
+      dataSource.setTestConnectionOnCheckin( false );
+      dataSource.setIdleConnectionTestPeriod( 60 );
+      dataSource.setAcquireRetryAttempts( 10 );
+      dataSource.setAcquireRetryDelay( 1000 );
     }
     catch ( Exception e ) {
       logger.error( "data source init failure!" );
@@ -66,13 +73,14 @@ public class DBUtil {
     Connection conn = getConn();
     try {
       if ( bean.getPageInfo().isPageFlag() ) {
-        Long count = new QueryRunner().query( getConn(), String.format( QUERY_COUNT, sql ), new ScalarHandler<Long>(), bean.getQueryParams().toArray() );
+        Long count = new QueryRunner().query( conn, String.format( QUERY_COUNT, sql ), new ScalarHandler<Long>(), bean.getQueryParams().toArray() );
         bean.getPageInfo().setCountRecord( count.intValue() );
       }
       if ( bean.getPageInfo().isPageFlag() ) {
         sql = sql + " limit  " + bean.getPageInfo().getPageSize() * ( bean.getPageInfo().getCurrentPageNum() - 1 ) + " , " + bean.getPageInfo().getPageSize() + " ";
       }
-      return new QueryRunner().query( getConn(), sql, getBeanListHandler( bean ), bean.getQueryParams().toArray() );
+      logger.info( sql + "--params:" + ArrayUtils.toString( bean.getQueryParams().toArray() ) );
+      return new QueryRunner().query( conn, sql, getBeanListHandler( bean ), bean.getQueryParams().toArray() );
     }
     catch ( Exception e ) {
       e.printStackTrace();
@@ -96,9 +104,11 @@ public class DBUtil {
   public static int update( String sql, Object... objs ) {
     Connection conn = getConn();
     try {
+      logger.info( sql + "--params:" + ArrayUtils.toString( objs ) );
       return new QueryRunner().update( conn, sql, objs );
     }
     catch ( Exception e ) {
+      e.printStackTrace();
       logger.error( "update failure!" );
       return 0;
     }
@@ -116,14 +126,14 @@ public class DBUtil {
   }
 
   public static <T extends BaseBean> T getObjById( T bean ) {
-    String tableName = bean.getClass().getSimpleName();
     String sql = getSQL( bean.getClass() ) + " and id=?";
+    bean.getQueryParams().add( bean.getId() );
     List<T> list = queryBeanList( sql, bean );
     if ( CollectionUtils.isEmpty( list ) ) {
       return null;
     }
     else {
-      return queryBeanList( sql, bean ).get( 0 );
+      return list.get( 0 );
     }
 
   }
@@ -136,6 +146,11 @@ public class DBUtil {
   public static <T extends BaseBean> int delete( T obj ) {
     String tableName = obj.getClass().getSimpleName();
     return update( "delete from " + tableName + " where id = ?", obj.getId() );
+  }
+
+  public static <T extends BaseBean> int update( T obj ) {
+    Pair<String, Object[]> pair = getUpdateSql( obj );
+    return update( pair.getLeft(), pair.getRight() );
   }
 
   private static <T extends BaseBean> Pair<String, Object[]> getInsertSql( T obj ) {
@@ -159,7 +174,34 @@ public class DBUtil {
 
       }
     }
-    String sql = String.format( "insert into %s (%s) values (%s)", tableName, StringUtils.join( keys.toArray(), "," ), StringUtils.join( values.toArray(), "," ) );
+    String sql = String.format( "insert into %s (%s) values (%s)", tableName, StringUtils.join( keys.toArray(), "," ), StringUtils.join( placeHolds.toArray(), "," ) );
+    Object[] objs = values.toArray();
+    Pair<String, Object[]> pair = new ImmutablePair<String, Object[]>( sql, objs );
+    return pair;
+  }
+
+  private static <T extends BaseBean> Pair<String, Object[]> getUpdateSql( T obj ) {
+    String tableName = obj.getClass().getSimpleName();
+    Field[] fields = obj.getClass().getDeclaredFields();
+    List<String> keys = new ArrayList<>();
+    List<Object> values = new ArrayList<>();
+    for ( int i = 0; i < fields.length; i++ ) {
+      if ( isConvertField( fields[i].getType() ) ) {
+        String fieldName = fields[i].getName();
+        String methodName = "get" + StringUtils.capitalize( fieldName );
+        keys.add( fieldName + "=?" );
+        try {
+          values.add( obj.getClass().getMethod( methodName ).invoke( obj ) );
+        }
+        catch ( Exception e ) {
+          logger.error( "getUpdateSql reflect method invoke error." );
+        }
+
+      }
+    }
+    values.add( obj.getId() );
+
+    String sql = String.format( "update %s set %s where id=?", tableName, StringUtils.join( keys.toArray(), "," ) );
     Object[] objs = values.toArray();
     Pair<String, Object[]> pair = new ImmutablePair<String, Object[]>( sql, objs );
     return pair;

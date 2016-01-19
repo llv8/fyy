@@ -49,6 +49,10 @@ public class BaseService<T extends BaseBean> {
     return 0;
   }
 
+  public int update( T bean ) {
+    return DBUtil.update( bean );
+  }
+
   public static Logger getLogger() {
     return logger;
   }
