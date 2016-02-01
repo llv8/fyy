@@ -30,17 +30,17 @@
 		</div> <img class="top_bottom" src="images/top/bottom.gif"> <map
 				name="Map" id="Map">
 				<area shape="rect" coords="3,1,49,22" href="javascript:;"
-					onclick="top.location.href='indexUI/User.Action'" />
+					onclick="top.location.href='indexUI/Customer.Action'" />
 				<area shape="rect" coords="52,2,95,21" href="javascript:;"
 					onclick="top.frames['mainFrame'].frames[1].history.back()" />
 				<area shape="rect" coords="102,2,144,21" href="javascript:;"
 					onclick="top.frames['mainFrame'].frames[1].history.go()" />
 				<area shape="rect" coords="150,1,197,22" href="javascript:;"
-					onclick="top.location.href='indexUI/User.Action'" />
+					onclick="top.location.href='indexUI/Customer.Action'" />
 				<area shape="rect" coords="210,2,304,20" href="javascript:;"
-					onclick="top.location.href='unLogin/User.Action'" />
+					onclick="top.location.href='unLogin/Customer.Action'" />
 				<area shape="rect" coords="314,1,361,23" href="javascript:;"
-					onclick="top.location.href='unLogin/User.Action'" />
+					onclick="top.location.href='unLogin/Customer.Action'" />
 			</map>
 </body>
 </html>

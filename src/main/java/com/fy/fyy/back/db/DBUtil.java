@@ -33,7 +33,7 @@ public class DBUtil {
       dataSource = new ComboPooledDataSource();
       dataSource.setUser( "root" );
       dataSource.setPassword( "root" );
-      dataSource.setJdbcUrl( "jdbc:mysql://localhost:3306/fyy?characterEncoding=utf-8" );
+      dataSource.setJdbcUrl( "jdbc:mysql://localhost:3306/fyy?useUnicode=true&characterEncoding=UTF-8" );
       dataSource.setDriverClass( "com.mysql.jdbc.Driver" );
       dataSource.setInitialPoolSize( 10 );
       dataSource.setMinPoolSize( 5 );

@@ -41,24 +41,24 @@
 				<%
 				  List<Employee> list = (List<Employee>)request.getAttribute( "employeeList" );
 				  for ( Employee employee : list ) {
-				    pageContext.setAttribute( "employee", employee );
+				    pageContext.setAttribute( "bean", employee );
 				%>
 				<tr>
-					<td>${employee.userName }</td>
-					<td>${employee.status.name }</td>
-					<td>${employee.department.name }</td>
-					<td>${employee.position.name }</td>
-					<td>${employee.updateDate }</td>
-					<td>${employee.createDate }</td>
-					<td>${employee.phone }</td>
-					<td>${employee.email }</td>
+					<td>${bean.userName }</td>
+					<td>${bean.status.name }</td>
+					<td>${bean.department.name }</td>
+					<td>${bean.position.name }</td>
+					<td>${bean.updateDate }</td>
+					<td>${bean.createDate }</td>
+					<td>${bean.phone }</td>
+					<td>${bean.email }</td>
 					<td><div>
 							<img src="images/tab/update.gif" /><span> [</span><a
-								href="updateUI/Employee.Action?employee.id=" ${employee.id }>编辑</a><span>]</span>
+								href="addUI/Employee.Action?employee.id=${bean.id }">编辑</a><span>]</span>
 						</div></td>
 					<td><div>
 							<span><img src="images/tab/del2.gif" /> </span><span>[</span><a
-								href="del/Employee.Action?employee.id=" ${employee.id }>删除</a><span>]</span>
+								href="del/Employee.Action?employee.id=${bean.id }">删除</a><span>]</span>
 						</div></td>
 				</tr>
 				<%
@@ -72,9 +72,11 @@
 		<div class="bb">
 			<span>共${employee.pageInfo.countRecord }条纪录，当前第${employee.pageInfo.currentPageNum }/${employee.pageInfo.countPage }页，每页${employee.pageInfo.pageSize }条纪录</span>
 			<div>
-				<img src="images/tab/first.gif"><img src="images/tab/back.gif"><img
-						src="images/tab/next.gif"><img src="images/tab/last.gif"><input /><img
-								src="images/tab/go.gif">
+				<img src="images/tab/first.gif" onclick="location.href='<%=basePath%>list/Employee.Action?employee.pageInfo.currentPageNum=1'" />
+				<img src="images/tab/back.gif" onclick="location.href='<%=basePath%>list/Employee.Action?employee.pageInfo.currentPageNum=${employee.pageInfo.currentPageNum-1==0?1:(employee.pageInfo.currentPageNum-1) }'" />
+				<img src="images/tab/next.gif" onclick="location.href='<%=basePath%>list/Employee.Action?employee.pageInfo.currentPageNum=${employee.pageInfo.currentPageNum+1>employee.pageInfo.countPage?employee.pageInfo.countPage:(employee.pageInfo.currentPageNum+1) }'" />
+				<img src="images/tab/last.gif" onclick="location.href='<%=basePath%>list/Employee.Action?employee.pageInfo.currentPageNum=${employee.pageInfo.countPage }'" />
+				<input id="goPageNum" /><img src="images/tab/go.gif" onclick="var goPageNum=document.getElementById('goPageNum').value;isNaN(goPageNum)&&alert('请输入数字');var countPage=${employee.pageInfo.countPage };var go=goPageNum<1?1:goPageNum>countPage?countPage:goPageNum;location.href='<%=basePath%>list/Employee.Action?employee.pageInfo.currentPageNum='+go+''"/>
 			</div>
 		</div>
 	</div>

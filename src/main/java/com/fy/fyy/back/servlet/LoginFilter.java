@@ -27,7 +27,7 @@ public class LoginFilter implements Filter {
   public void doFilter( ServletRequest req, ServletResponse resp, FilterChain chain ) throws IOException, ServletException {
     HttpServletRequest httpReq = (HttpServletRequest)req;
     HttpServletResponse httpResp = (HttpServletResponse)resp;
-
+    httpReq.setCharacterEncoding( "UTF-8" );
     if ( httpReq.getSession().getAttribute( ServletUtil.LOGIN_USER ) == null && !ServletUtil.LOGIN_UI.equals( ServletUtil.getURI( httpReq ) )
         && !ServletUtil.LOGIN.equals( ServletUtil.getURI( httpReq ) ) ) {
       String str = "<script type='text/javascript'>top.location.href='/fyy" + ServletUtil.LOGIN_UI + "'</script>";

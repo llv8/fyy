@@ -9,7 +9,7 @@ public class Inventory extends BaseBean {
   private Date updateDate;
   private Type type;
   private Integer typeId;
-  private Employee user;
+  private Employee employee;
   private Integer userId;
   private Material material;
   private Integer materialId;
@@ -63,12 +63,12 @@ public class Inventory extends BaseBean {
     this.type = type;
   }
 
-  public Employee getUser() {
-    return user;
+  public Employee getEmployee() {
+    return employee;
   }
 
-  public void setUser( Employee user ) {
-    this.user = user;
+  public void setEmployee( Employee employee ) {
+    this.employee = employee;
   }
 
   public Material getMaterial() {

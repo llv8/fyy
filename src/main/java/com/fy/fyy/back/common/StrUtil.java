@@ -16,4 +16,12 @@ public class StrUtil {
     return str.replaceAll( c + "*$", StrUtil.EMPTY ).replaceAll( "^" + c + "*", StrUtil.EMPTY );
   }
 
+  public static boolean isId( String id ) {
+    return id != null && Integer.valueOf( id.trim() ) > 0;
+  }
+
+  public static boolean isId( Integer id ) {
+    return id != null && id > 0;
+  }
+
 }
