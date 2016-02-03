@@ -20,7 +20,8 @@ public class BaseService<T extends BaseBean> {
     result = DBUtil.queryBeanList( sb.toString(), bean );
     if ( bean.getPageInfo().isPageFlag() ) {
       bean.getPageInfo().setCountPage(
-          bean.getPageInfo().getCountRecord() / bean.getPageInfo().getPageSize() + bean.getPageInfo().getCountRecord() % bean.getPageInfo().getPageSize() == 0 ? 0 : 1 );
+          bean.getPageInfo().getCountRecord() / bean.getPageInfo().getPageSize() + ( bean.getPageInfo().getCountRecord() % bean.getPageInfo().getPageSize() == 0 ? 0 : 1 ) );
+      if ( bean.getPageInfo().getCountPage() == 0 ) bean.getPageInfo().setCountPage( 1 );
     }
     return result;
   }

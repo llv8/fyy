@@ -10,7 +10,6 @@ public class Material extends BaseBean {
   private Integer categoryId;
   private Unit unit;
   private Integer unitId;
-  private Integer num;
   private String note;
   private Date createDate;
   private Date updateDate;
@@ -61,14 +60,6 @@ public class Material extends BaseBean {
   public void setUnitId( Integer unitId ) {
     this.unitId = unitId;
     setUnit( CodeBean.get( Unit.class, unitId ) );
-  }
-
-  public Integer getNum() {
-    return num;
-  }
-
-  public void setNum( Integer num ) {
-    this.num = num;
   }
 
   public String getNote() {

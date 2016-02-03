@@ -5,66 +5,64 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.fy.fyy.back.bean.CodeBean;
-import com.fy.fyy.back.bean.Employee.Department;
-import com.fy.fyy.back.bean.Employee.Position;
-import com.fy.fyy.back.bean.Employee.Status;
+import com.fy.fyy.back.bean.Customer;
 import com.fy.fyy.back.bean.Inventory;
+import com.fy.fyy.back.bean.Inventory.Type;
+import com.fy.fyy.back.bean.Material;
+import com.fy.fyy.back.common.StrUtil;
 import com.fy.fyy.back.service.InventoryService;
+import com.fy.fyy.back.service.MaterialService;
+import com.fy.fyy.back.servlet.ServletUtil;
 
 
-public class InventoryAction extends BaseAction {
+public class InventoryAction extends BaseAction<Inventory> {
 
-  Inventory inventory = new Inventory();
   InventoryService inventoryService = new InventoryService();
 
+  public InventoryAction() {
+    bean = new Inventory();
+  }
+
   public String list() {
-    List<Inventory> inventoryList = inventoryService.list( inventory );
-    getRequestAttrs().put( "inventoryList", inventoryList );
-    getRequestAttrs().put( "inventory", inventory );
+    List<Inventory> inventoryList = inventoryService.list( bean );
+    getRequestAttrs().put( "beanList", inventoryList );
+    getRequestAttrs().put( "bean", bean );
     return "/inventorylist.jsp";
   }
 
   public String addUI() {
-    getRequestAttrs().put( "departmentlist", CodeBean.list.get( Department.class ) );
-    getRequestAttrs().put( "positionlist", CodeBean.list.get( Position.class ) );
-    getRequestAttrs().put( "statuslist", CodeBean.list.get( Status.class ) );
+    if ( StrUtil.isId( bean.getId() ) ) {
+      getRequestAttrs().put( "bean", bean );
+    }
+    MaterialService marterialService = new MaterialService();
+    Material material = new Material();
+    material.getPageInfo().setPageFlag( false );
+    getRequestAttrs().put( "materiallist", marterialService.list( material ) );
+    getRequestAttrs().put( "typelist", CodeBean.list.get( Type.class ) );
     return "/addinventory.jsp";
   }
 
   public String add() {
+
     Date now = new Date( Calendar.getInstance().getTimeInMillis() );
-    inventory.setCreateDate( now );
-    inventory.setUpdateDate( now );
-    inventoryService.insert( inventory );
+    bean.setCreateDate( now );
+    bean.setUpdateDate( now );
+    bean.setCustomerId( ( (Customer)getSessionAttrs().get( ServletUtil.LOGIN_USER ) ).getId() );
+    inventoryService.insert( bean );
     return list();
   }
 
   public String update() {
     Date now = new Date( Calendar.getInstance().getTimeInMillis() );
-    inventory.setUpdateDate( now );
-    inventoryService.update( inventory );
+    bean.setUpdateDate( now );
+    bean.setCustomerId( ( (Customer)getSessionAttrs().get( ServletUtil.LOGIN_USER ) ).getId() );
+    inventoryService.update( bean );
     return list();
   }
 
   public String del() {
-    inventoryService.delete( inventory );
+    inventoryService.delete( bean );
     return list();
-  }
-
-  public Inventory getInventory() {
-    return inventory;
-  }
-
-  public void setInventory( Inventory inventory ) {
-    this.inventory = inventory;
-  }
-
-  public InventoryService getInventoryService() {
-    return inventoryService;
-  }
-
-  public void setInventoryService( InventoryService inventoryService ) {
-    this.inventoryService = inventoryService;
   }
 
 }

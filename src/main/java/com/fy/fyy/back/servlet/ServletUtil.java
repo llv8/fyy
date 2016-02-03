@@ -17,7 +17,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.fy.fyy.back.action.BaseAction;
 import com.fy.fyy.back.action.RedirectAnnotation;
+import com.fy.fyy.back.bean.BaseBean;
 import com.fy.fyy.back.common.StrUtil;
+import com.fy.fyy.back.db.DBUtil;
 
 
 public class ServletUtil extends HttpServlet {
@@ -38,6 +40,7 @@ public class ServletUtil extends HttpServlet {
     uri = StrUtil.trim( uri.trim(), StrUtil.C_SLASH );
     String[] uris = uri.split( StrUtil.SLASH );
     if ( StringUtils.countMatches( uris[uris.length - 1], StrUtil.DOT ) == 1 ) {
+      req.setAttribute( "CUR_ACTION", uris[uris.length - 1] );
       String clazz = uris[uris.length - 1].replace( StrUtil.DOT, StrUtil.EMPTY );
       String method = ( uris.length == 2 ) ? uris[0] : uris.length == 1 ? "exec" : null;
       if ( method == null ) return null;
@@ -89,12 +92,21 @@ public class ServletUtil extends HttpServlet {
     }
   }
 
+  private static void loadBean( HttpServletRequest req, BaseAction action ) {
+    String strId = req.getParameter( "bean.id" );
+    if ( StringUtils.isNotEmpty( strId ) ) {
+      action.getBean().setId( Integer.valueOf( strId ) );
+      BaseBean bean = DBUtil.getObjById( action.getBean() );
+      action.setBean( bean );
+    }
+  }
+
   public static Pair<String, Boolean> exec( HttpServletRequest req ) {
     Pair<String, String> class2Method = parseURI( req );
 
     try {
       BaseAction action = (BaseAction)Class.forName( PKG_ACTION + class2Method.getLeft() ).newInstance();
-
+      loadBean( req, action );
       copyAttrs( req, action );
 
       BeanUtils.populate( action, req.getParameterMap() );

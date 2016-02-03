@@ -5,66 +5,55 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.fy.fyy.back.bean.CodeBean;
-import com.fy.fyy.back.bean.Employee.Department;
-import com.fy.fyy.back.bean.Employee.Position;
-import com.fy.fyy.back.bean.Employee.Status;
 import com.fy.fyy.back.bean.Material;
+import com.fy.fyy.back.bean.Material.Category;
+import com.fy.fyy.back.bean.Material.Unit;
+import com.fy.fyy.back.common.StrUtil;
 import com.fy.fyy.back.service.MaterialService;
 
 
-public class MaterialAction extends BaseAction {
+public class MaterialAction extends BaseAction<Material> {
 
-  private Material material = new Material();
   private MaterialService materialService = new MaterialService();
 
+  public MaterialAction() {
+    bean = new Material();
+  }
+
   public String list() {
-    List<Material> materialList = materialService.list( material );
-    getRequestAttrs().put( "materialList", materialList );
-    getRequestAttrs().put( "material", material );
+    List<Material> materialList = materialService.list( bean );
+    getRequestAttrs().put( "beanList", materialList );
+    getRequestAttrs().put( "bean", bean );
     return "/materiallist.jsp";
   }
 
   public String addUI() {
-    getRequestAttrs().put( "departmentlist", CodeBean.list.get( Department.class ) );
-    getRequestAttrs().put( "positionlist", CodeBean.list.get( Position.class ) );
-    getRequestAttrs().put( "statuslist", CodeBean.list.get( Status.class ) );
+    if ( StrUtil.isId( bean.getId() ) ) {
+      getRequestAttrs().put( "bean", bean );
+    }
+    getRequestAttrs().put( "categorylist", CodeBean.list.get( Category.class ) );
+    getRequestAttrs().put( "unitlist", CodeBean.list.get( Unit.class ) );
     return "/addmaterial.jsp";
   }
 
   public String add() {
     Date now = new Date( Calendar.getInstance().getTimeInMillis() );
-    material.setCreateDate( now );
-    material.setUpdateDate( now );
-    materialService.insert( material );
+    bean.setCreateDate( now );
+    bean.setUpdateDate( now );
+    materialService.insert( bean );
     return list();
   }
 
   public String update() {
     Date now = new Date( Calendar.getInstance().getTimeInMillis() );
-    material.setUpdateDate( now );
-    materialService.update( material );
+    bean.setUpdateDate( now );
+    materialService.update( bean );
     return list();
   }
 
   public String del() {
-    materialService.delete( material );
+    materialService.delete( bean );
     return list();
-  }
-
-  public Material getMaterial() {
-    return material;
-  }
-
-  public void setMaterial( Material material ) {
-    this.material = material;
-  }
-
-  public MaterialService getMaterialService() {
-    return materialService;
-  }
-
-  public void setMaterialService( MaterialService materialService ) {
-    this.materialService = materialService;
   }
 
 }

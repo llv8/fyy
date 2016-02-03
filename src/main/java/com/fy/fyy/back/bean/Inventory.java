@@ -9,8 +9,8 @@ public class Inventory extends BaseBean {
   private Date updateDate;
   private Type type;
   private Integer typeId;
-  private Employee employee;
-  private Integer userId;
+  private Customer customer;
+  private Integer customerId;
   private Material material;
   private Integer materialId;
   private Integer num;
@@ -22,20 +22,28 @@ public class Inventory extends BaseBean {
     return inv;
   }
 
+  public Customer getCustomer() {
+    return customer;
+  }
+
+  public void setCustomer( Customer customer ) {
+    this.customer = customer;
+  }
+
+  public Integer getCustomerId() {
+    return customerId;
+  }
+
+  public void setCustomerId( Integer customerId ) {
+    this.customerId = customerId;
+  }
+
   public Date getUpdateDate() {
     return updateDate;
   }
 
   public void setUpdateDate( Date updateDate ) {
     this.updateDate = updateDate;
-  }
-
-  public Integer getUserId() {
-    return userId;
-  }
-
-  public void setUserId( Integer userId ) {
-    this.userId = userId;
   }
 
   public Integer getMaterialId() {
@@ -61,14 +69,6 @@ public class Inventory extends BaseBean {
 
   public void setType( Type type ) {
     this.type = type;
-  }
-
-  public Employee getEmployee() {
-    return employee;
-  }
-
-  public void setEmployee( Employee employee ) {
-    this.employee = employee;
   }
 
   public Material getMaterial() {

@@ -39,7 +39,6 @@ create table Material(
  name varchar(20) not null,
  categoryId int(1) not null,
  unitId int(1) not null,
- num int(10) not null,
  note varchar(256),
  createDate DATE,
  updateDate DATE

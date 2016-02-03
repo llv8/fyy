@@ -18,17 +18,17 @@
 	<div id="content">
 
 		<div class="bt">
-			<span id="content_title">${employee.id!=null?"修改用户":"新增用户" }</span>
+			<span id="content_title">${bean.id!=null?"修改用户":"新增用户" }</span>
 		</div>
 		<div class="form">
-			<form method="post" action="${employee.id!=null?"update":"add" }/Employee.Action">
-				<input type="hidden" name="employee.id" value="${employee.id }" />
+			<form method="post" action="${bean.id!=null?"update":"add" }/${CUR_ACTION }">
+				<input type="hidden" name="bean.id" value="${bean.id }" />
 				<div>
-					<span>用户名:</span> <input name="employee.userName"
-						value="${employee.userName }" />
+					<span>用户名:</span> <input name="bean.userName"
+						value="${bean.userName }" />
 				</div>
 				<div>
-					<span>状态:</span> <select name="employee.statusId">
+					<span>状态:</span> <select name="bean.statusId">
 						<%
 						  List<Status> statuslist = (List<Status>)request.getAttribute( "statuslist" );
 						  for ( Status status : statuslist ) {
@@ -41,7 +41,7 @@
 					</select>
 				</div>
 				<div>
-					<span>部门:</span> <select name="employee.departmentId">
+					<span>部门:</span> <select name="bean.departmentId">
 						<%
 						  List<Department> departmentlist = (List<Department>)request.getAttribute( "departmentlist" );
 						  for ( Department department : departmentlist ) {
@@ -54,7 +54,7 @@
 					</select>
 				</div>
 				<div>
-					<span>职位:</span> <select name="employee.positionId">
+					<span>职位:</span> <select name="bean.positionId">
 						<%
 						  List<Position> positionlist = (List<Position>)request.getAttribute( "positionlist" );
 						  for ( Position position : positionlist ) {
@@ -67,16 +67,16 @@
 					</select>
 				</div>
 				<div>
-					<span>电话:</span> <input name="employee.phone"
-						value="${employee.phone }" />
+					<span>电话:</span> <input name="bean.phone"
+						value="${bean.phone }" />
 				</div>
 				<div>
-					<span>邮箱:</span> <input name="employee.email"
-						value="${employee.email }" />
+					<span>邮箱:</span> <input name="bean.email"
+						value="${bean.email }" />
 				</div>
 				<div class="action">
-					<input type="submit" value="${employee.id!=null?" 修改":"添加" }" /><input
-						type="button" value="取消" />
+					<input type="submit" value="${bean.id!=null?" 修改":"添加" }" /><input
+						type="button" value="取消" onclick="location.href='list/${CUR_ACTION }'" />
 				</div>
 			</form>
 		</div>

@@ -5,14 +5,17 @@ import com.fy.fyy.back.service.CustomerService;
 import com.fy.fyy.back.servlet.ServletUtil;
 
 
-public class CustomerAction extends BaseAction {
+public class CustomerAction extends BaseAction<Customer> {
 
-  private Customer customer = new Customer();
   private CustomerService customerService = new CustomerService();
 
+  public CustomerAction() {
+    bean = new Customer();
+  }
+  
   @RedirectAnnotation
   public String login() {
-    Customer customer = customerService.login( this.customer );
+    Customer customer = customerService.login( bean );
     if ( customer == null ) {
       return ServletUtil.LOGIN_UI;
     }
@@ -34,22 +37,6 @@ public class CustomerAction extends BaseAction {
 
   public String indexUI() {
     return "/index.jsp";
-  }
-
-  public Customer getCustomer() {
-    return customer;
-  }
-
-  public void setCustomer( Customer customer ) {
-    this.customer = customer;
-  }
-
-  public CustomerService getCustomerService() {
-    return customerService;
-  }
-
-  public void setCustomerService( CustomerService customerService ) {
-    this.customerService = customerService;
   }
 
 }
