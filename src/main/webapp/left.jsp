@@ -21,6 +21,8 @@
 					onclick="top.frames['mainFrame'].frames[1].location.href='list/Material.Action'">物料管理</a></li>
 				<li><a href="javascript:;"
 					onclick="top.frames['mainFrame'].frames[1].location.href='list/Inventory.Action'">库存管理</a></li>
+				<li><a href="javascript:;"
+					onclick="top.frames['mainFrame'].frames[1].location.href='list/InventoryReport.Action'">库存统计</a></li>
 			</ul>
 	</div>
 </body>

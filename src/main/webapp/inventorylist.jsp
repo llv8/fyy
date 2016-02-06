@@ -44,10 +44,10 @@
 				    pageContext.setAttribute( "inventory", inventory );
 				%>
 				<tr>
-					<td>${inventory.materialId }</td>
+					<td>${inventory.material.name }</td>
 					<td>${inventory.type.name }</td>
 					<td>${inventory.num }</td>
-					<td>${inventory.customerId }</td>
+					<td>${inventory.customer.loginName }</td>
 					<td>${inventory.updateDate }</td>
 					<td>${inventory.createDate }</td>
 					<td>${inventory.note }</td>

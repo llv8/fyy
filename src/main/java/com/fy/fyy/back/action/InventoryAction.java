@@ -25,6 +25,7 @@ public class InventoryAction extends BaseAction<Inventory> {
 
   public String list() {
     List<Inventory> inventoryList = inventoryService.list( bean );
+
     getRequestAttrs().put( "beanList", inventoryList );
     getRequestAttrs().put( "bean", bean );
     return "/inventorylist.jsp";
