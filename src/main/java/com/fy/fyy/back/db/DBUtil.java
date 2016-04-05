@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -31,9 +32,11 @@ public class DBUtil {
   static {
     try {
       dataSource = new ComboPooledDataSource();
-      dataSource.setUser( "root" );
-      dataSource.setPassword( "root" );
-      dataSource.setJdbcUrl( "jdbc:mysql://localhost:3306/fyy?useUnicode=true&characterEncoding=UTF-8" );
+      Properties properties = new Properties();
+      properties.load( DBUtil.class.getClassLoader().getResourceAsStream( "/../conf/conf.properties" ) );
+      dataSource.setUser( properties.getProperty( "db_user" ) );
+      dataSource.setPassword( properties.getProperty( "db_password" ) );
+      dataSource.setJdbcUrl( properties.getProperty( "db_url" ) );
       dataSource.setDriverClass( "com.mysql.jdbc.Driver" );
       dataSource.setInitialPoolSize( 10 );
       dataSource.setMinPoolSize( 5 );
