@@ -40,7 +40,7 @@ public class BaseService<T extends BaseBean> {
   public <L> void loadBeans( List<L> beanList, Class<T> clazz ) {
     if ( CollectionUtils.isEmpty( beanList ) ) return;
     Set<Integer> ids = StrUtil.getIds( beanList, clazz );
-    String idStrs = StrUtil.getIds( ids );
+    final String idStrs = StrUtil.getIds( ids );
     List<T> attrBeans = null;
     attrBeans = getList( StrUtil.getInstance( clazz ), new QuerySqlStr<T>() {
 
