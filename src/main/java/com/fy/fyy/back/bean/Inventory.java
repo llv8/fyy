@@ -16,12 +16,6 @@ public class Inventory extends BaseBean {
   private Integer num;
   private String note;
 
-  public static Inventory getInstance( Integer id ) {
-    Inventory inv = new Inventory();
-    inv.setId( id );
-    return inv;
-  }
-
   public Customer getCustomer() {
     return customer;
   }
@@ -52,7 +46,7 @@ public class Inventory extends BaseBean {
 
   public void setMaterialId( Integer materialId ) {
     this.materialId = materialId;
-    CachedBean.get().getValue( Material.getInstance( materialId ) );
+    CachedBean.get().getValue( BaseBean.getInstance( Material.class, materialId ) );
   }
 
   public Date getCreateDate() {

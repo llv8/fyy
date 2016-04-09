@@ -18,13 +18,13 @@
 	<div id="content">
 
 		<div class="bt">
-			<span id="content_title">${bean.id!=null?"修改用户":"新增用户" }</span>
+			<span id="content_title">${bean.id!=null?"修改员工信息":"新增员工信息" }</span>
 		</div>
 		<div class="form">
 			<form method="post" action="${bean.id!=null?"update":"add" }/${CUR_ACTION }">
 				<input type="hidden" name="bean.id" value="${bean.id }" />
 				<div>
-					<span>用户名:</span> <input name="bean.userName"
+					<span>员工名:</span> <input name="bean.userName"
 						value="${bean.userName }" />
 				</div>
 				<div>
@@ -67,16 +67,15 @@
 					</select>
 				</div>
 				<div>
-					<span>电话:</span> <input name="bean.phone"
-						value="${bean.phone }" />
+					<span>电话:</span> <input name="bean.phone" value="${bean.phone }" />
 				</div>
 				<div>
-					<span>邮箱:</span> <input name="bean.email"
-						value="${bean.email }" />
+					<span>邮箱:</span> <input name="bean.email" value="${bean.email }" />
 				</div>
 				<div class="action">
 					<input type="submit" value="${bean.id!=null?" 修改":"添加" }" /><input
-						type="button" value="取消" onclick="location.href='list/${CUR_ACTION }'" />
+						type="button" value="取消"
+						onclick="location.href='list/${CUR_ACTION }'" />
 				</div>
 			</form>
 		</div>

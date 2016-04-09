@@ -13,7 +13,7 @@ import com.fy.fyy.back.exception.UIException;
 public class CustomerService extends BaseService<Customer> {
 
   private static Logger logger = LoggerFactory.getLogger( CustomerService.class );
-  
+
   public Customer login( Customer customer ) {
     Customer result = null;
     List<Customer> list = getList( customer, new QuerySqlStr<Customer>() {
@@ -30,7 +30,7 @@ public class CustomerService extends BaseService<Customer> {
       }
     } );
     if ( CollectionUtils.isEmpty( list ) ) {
-        throw new UIException("用户名或密码错误");
+      throw new UIException( "用户名或密码错误" );
     }
     else if ( list.size() == 1 ) {
       result = list.get( 0 );
@@ -39,6 +39,17 @@ public class CustomerService extends BaseService<Customer> {
       logger.error( "DB has same username and password more than one." );
     }
     return result;
+  }
+
+  public List<Customer> list( Customer customer ) {
+    List<Customer> list = getList( customer, new QuerySqlStr<Customer>() {
+
+      @Override
+      public String get( Customer bean ) {
+        return "";
+      }
+    } );
+    return list;
   }
 
 }

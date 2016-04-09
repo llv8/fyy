@@ -12,12 +12,6 @@ public class Customer extends BaseBean {
   private Employee employee;
   private Integer employeeId;
 
-  public static Customer getInstance( Integer id ) {
-    Customer usr = new Customer();
-    usr.setId( id );
-    return usr;
-  }
-
   public String getLoginName() {
     return loginName;
   }
@@ -64,6 +58,7 @@ public class Customer extends BaseBean {
 
   public void setEmployeeId( Integer employeeId ) {
     this.employeeId = employeeId;
+    CachedBean.get().getValue( BaseBean.getInstance( Employee.class, employeeId ) );
   }
 
 }

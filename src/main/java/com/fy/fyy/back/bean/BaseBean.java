@@ -10,6 +10,18 @@ public class BaseBean {
   private List<Object> queryParams = new ArrayList<>();
   private PageInfo pageInfo = new PageInfo();
 
+  public static <T extends BaseBean> T getInstance( Class<T> clazz, Integer id ) {
+    T instance = null;
+    try {
+      instance = clazz.newInstance();
+    }
+    catch ( InstantiationException | IllegalAccessException e ) {
+      
+    }
+    instance.setId( id );
+    return instance;
+  }
+
   public void BeseBean( Integer id ) {
     this.id = id;
   }

@@ -17,12 +17,6 @@ public class Employee extends BaseBean {
   private Department department;
   private Integer departmentId;
 
-  public static Employee getInstance( Integer id ) {
-    Employee usr = new Employee();
-    usr.setId( id );
-    return usr;
-  }
-
   public String getUserName() {
     return userName;
   }
@@ -113,7 +107,6 @@ public class Employee extends BaseBean {
     this.departmentId = departmentId;
     this.setDepartment( CodeBean.get( Department.class, departmentId ) );
   }
-
 
   public static class Status extends CodeBean {
 

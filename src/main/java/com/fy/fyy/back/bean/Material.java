@@ -14,12 +14,6 @@ public class Material extends BaseBean {
   private Date createDate;
   private Date updateDate;
 
-  public static Material getInstance( Integer id ) {
-    Material marterial = new Material();
-    marterial.setId( id );
-    return marterial;
-  }
-
   public String getName() {
     return name;
   }

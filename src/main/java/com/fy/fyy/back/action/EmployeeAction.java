@@ -13,7 +13,7 @@ import com.fy.fyy.back.common.StrUtil;
 import com.fy.fyy.back.service.EmployeeService;
 
 
-@ActionAnnotation(name = "职员管理")
+@ActionAnnotation(name = ActionModel.Employee)
 public class EmployeeAction extends BaseAction<Employee> {
 
   private EmployeeService employeeService = new EmployeeService();
@@ -22,7 +22,7 @@ public class EmployeeAction extends BaseAction<Employee> {
     bean = new Employee();
   }
 
-  @ActionMethodAnnotation(name = "职员列表")
+  @ActionAnnotation(name = ActionModel.EmployeeQuery)
   public String list() {
     List<Employee> employeeList = employeeService.list( bean );
     getRequestAttrs().put( "beanList", employeeList );
@@ -30,6 +30,7 @@ public class EmployeeAction extends BaseAction<Employee> {
     return "/employeelist.jsp";
   }
 
+  @ActionAnnotation(name = ActionModel.EmployeeAdd)
   public String addUI() {
     if ( StrUtil.isId( bean.getId() ) ) {
       getRequestAttrs().put( "bean", bean );
@@ -40,6 +41,7 @@ public class EmployeeAction extends BaseAction<Employee> {
     return "/addemployee.jsp";
   }
 
+  @ActionAnnotation(name = ActionModel.EmployeeAdd)
   public String add() {
     Date now = new Date( Calendar.getInstance().getTimeInMillis() );
     bean.setCreateDate( now );
@@ -48,6 +50,7 @@ public class EmployeeAction extends BaseAction<Employee> {
     return list();
   }
 
+  @ActionAnnotation(name = ActionModel.EmployeeUpdate)
   public String update() {
     Date now = new Date( Calendar.getInstance().getTimeInMillis() );
     bean.setUpdateDate( now );
@@ -55,6 +58,7 @@ public class EmployeeAction extends BaseAction<Employee> {
     return list();
   }
 
+  @ActionAnnotation(name = ActionModel.EmployeeDel)
   public String del() {
     employeeService.delete( bean );
     return list();
