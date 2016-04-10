@@ -20,8 +20,7 @@
 			<span id="content_title">总库存统计</span>
 		</div>
 
-
-
+		<%@ include file="message.jsp"%>
 		<div class="tab">
 			<table>
 				<tr>
@@ -31,9 +30,9 @@
 					<th>剩余</th>
 				</tr>
 				<%
-				  List<InventoryReport> list = (List<InventoryReport>)request.getAttribute( "beanList" );
-				  for ( InventoryReport inventoryReport : list ) {
-				    pageContext.setAttribute( "inventoryReport", inventoryReport );
+					List<InventoryReport> list = (List<InventoryReport>) request.getAttribute("beanList");
+					for (InventoryReport inventoryReport : list) {
+						pageContext.setAttribute("inventoryReport", inventoryReport);
 				%>
 				<tr>
 					<td>${inventoryReport.name }--${ categorymap[inventoryReport.categoryId] }</td>
@@ -42,7 +41,7 @@
 					<td>${inventoryReport.leftNum }(${unitmap[inventoryReport.unitId]})</td>
 				</tr>
 				<%
-				  }
+					}
 				%>
 			</table>
 		</div>

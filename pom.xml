@@ -72,7 +72,7 @@
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		<outputDirectory>${CATALINA_HOME}/webapps/${project.artifactId}/${project.artifactId}</outputDirectory>
+		<!-- <outputDirectory>${CATALINA_HOME}/webapps/${project.artifactId}/${project.artifactId}</outputDirectory>-->
 		<!-- <sourceDirectory>src/main/java</sourceDirectory> -->
 		<plugins>
 			<plugin>

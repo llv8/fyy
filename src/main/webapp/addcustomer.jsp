@@ -1,6 +1,3 @@
-<%@page import="com.fy.fyy.back.bean.Employee.Position"%>
-<%@page import="com.fy.fyy.back.bean.Employee.Department"%>
-<%@page import="com.fy.fyy.back.bean.Employee.Status"%>
 <%@page import="java.util.List"%>
 <%@page import="com.fy.fyy.back.bean.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -20,11 +17,12 @@
 		<div class="bt">
 			<span id="content_title">${bean.id!=null?"修改用户信息":"新增用户信息" }</span>
 		</div>
+		<%@ include file="message.jsp" %>
 		<div class="form">
 			<form method="post" action="${bean.id!=null?"update":"add" }/${CUR_ACTION }">
 				<input type="hidden" name="bean.id" value="${bean.id }" />
 				<div>
-					<span>登录名:</span> <input name="bean.userName"
+					<span>登录名:</span> <input name="bean.loginName"
 						value="${bean.loginName }" />
 				</div>
 				<div>

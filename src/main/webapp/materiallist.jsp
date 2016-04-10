@@ -21,7 +21,7 @@
 
 			</div>
 		</div>
-
+		<%@ include file="message.jsp"%>
 
 
 		<div class="tab">
@@ -37,9 +37,9 @@
 					<th>删除</th>
 				</tr>
 				<%
-				  List<Material> list = (List<Material>)request.getAttribute( "beanList" );
-				  for ( Material marterial : list ) {
-				    pageContext.setAttribute( "marterial", marterial );
+					List<Material> list = (List<Material>) request.getAttribute("beanList");
+					for (Material marterial : list) {
+						pageContext.setAttribute("marterial", marterial);
 				%>
 				<tr>
 					<td>${marterial.name }</td>
@@ -58,7 +58,7 @@
 						</div></td>
 				</tr>
 				<%
-				  }
+					}
 				%>
 			</table>
 		</div>

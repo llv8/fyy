@@ -58,7 +58,7 @@ public class Customer extends BaseBean {
 
   public void setEmployeeId( Integer employeeId ) {
     this.employeeId = employeeId;
-    CachedBean.get().getValue( BaseBean.getInstance( Employee.class, employeeId ) );
+    this.employee = CachedBean.get().getValue( BaseBean.getInstance( Employee.class, employeeId ) );
   }
 
 }

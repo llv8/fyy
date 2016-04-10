@@ -1,41 +1,53 @@
 package com.fy.fyy.back.action;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fy.fyy.back.bean.BaseBean;
-import com.fy.fyy.back.servlet.ServletUtil;
-
+import com.fy.fyy.back.common.Constraint;
+import com.fy.fyy.back.common.ContextUtil;
 
 public class BaseAction<T extends BaseBean> {
 
-  protected T bean;
+	protected T bean;
 
-  private Map<String, Object> sessionAttrs = new HashMap<String, Object>();
-  private Map<String, Object> requestAttrs = new HashMap<String, Object>();
+	/**
+	 * default action
+	 * 
+	 * @return
+	 */
+	public String exec() {
+		return Constraint.INDEX_UI;
+	}
 
-  public Map<String, Object> getSessionAttrs() {
-    return sessionAttrs;
-  }
+	public T getBean() {
+		return bean;
+	}
 
-  public Map<String, Object> getRequestAttrs() {
-    return requestAttrs;
-  }
+	public void setBean(T bean) {
+		this.bean = bean;
+	}
 
-  /**
-   * default action
-   * @return
-   */
-  public String exec() {
-    return ServletUtil.INDEX_UI;
-  }
+	public void info(String message) {
+		message("info", message);
+	}
 
-  public T getBean() {
-    return bean;
-  }
+	public void warn(String message) {
+		message("warn", message);
+	}
 
-  public void setBean( T bean ) {
-    this.bean = bean;
-  }
+	public void error(String message) {
+		message("error", message);
+	}
 
+	private void message(String key, String value) {
+		Object obj = ContextUtil.getReqAttr(key);
+		if (obj == null) {
+			List<String> list = new ArrayList<>();
+			list.add(value);
+			ContextUtil.getReqAttrs().put(key, list);
+		} else {
+			((List) obj).add(value);
+		}
+	}
 }

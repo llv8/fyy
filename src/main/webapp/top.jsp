@@ -25,7 +25,7 @@
 						<img src="images/top/center5.gif" usemap="#Map">
 					</div>
 					<div id="top_time">
-						<span class="tip_color"><%=DateFormatUtils.format( new Date(), "yyyy-MM-dd" )%></span>
+						<span class="tip_color"><%=DateFormatUtils.format(new Date(), "yyyy-MM-dd")%></span>
 					</div>
 		</div> <img class="top_bottom" src="images/top/bottom.gif"> <map
 				name="Map" id="Map">
@@ -38,7 +38,7 @@
 				<area shape="rect" coords="150,1,197,22" href="javascript:;"
 					onclick="top.location.href='indexUI/Customer.Action'" />
 				<area shape="rect" coords="210,2,304,20" href="javascript:;"
-					onclick="top.location.href='unLogin/Customer.Action'" />
+					onclick="top.location.href='updatePassword/Customer.Action'" />
 				<area shape="rect" coords="314,1,361,23" href="javascript:;"
 					onclick="top.location.href='unLogin/Customer.Action'" />
 			</map>

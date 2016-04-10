@@ -24,7 +24,7 @@
 				<li><a href="javascript:;"
 					onclick="top.frames['mainFrame'].frames[1].location.href='list/InventoryReport.Action'">库存统计</a></li>
 				<li><a href="javascript:;"
-					onclick="top.frames['mainFrame'].frames[1].location.href='list/Customer.Action'">员工管理</a></li>
+					onclick="top.frames['mainFrame'].frames[1].location.href='list/Customer.Action'">用户管理</a></li>
 			</ul>
 	</div>
 </body>

@@ -20,6 +20,7 @@
 		<div class="bt">
 			<span id="content_title">${bean.id!=null?"修改物料":"新增物料" }</span>
 		</div>
+		<%@ include file="message.jsp" %>
 		<div class="form">
 			<form method="post" action="${bean.id!=null?"update":"add" }/${CUR_ACTION }">
 				<input type="hidden" name="bean.id" value="${bean.id }" />

@@ -39,7 +39,7 @@ body {
 									<td width="185" nowrap="nowrap" class="STYLE1"><div
 											align="center">
 											<img src="images/main_51.gif" width="12" height="12" />
-											如有疑问请与技术人员联系
+											如有疑问请发email至venlv2046@gmail.com
 										</div></td>
 								</tr>
 							</table></td>

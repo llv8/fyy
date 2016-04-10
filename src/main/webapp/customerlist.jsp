@@ -23,7 +23,7 @@
 		</div>
 
 
-
+		<%@ include file="message.jsp"%>
 		<div class="tab">
 			<table>
 				<tr>
@@ -35,9 +35,9 @@
 					<th>删除</th>
 				</tr>
 				<%
-				  List<Customer> list = (List<Customer>)request.getAttribute( "beanList" );
-				  for ( Customer customer : list ) {
-				    pageContext.setAttribute( "customer", customer );
+					List<Customer> list = (List<Customer>) request.getAttribute("beanList");
+					for (Customer customer : list) {
+						pageContext.setAttribute("customer", customer);
 				%>
 				<tr>
 					<td>${customer.loginName }</td>
@@ -55,7 +55,7 @@
 						</div></td>
 				</tr>
 				<%
-				  }
+					}
 				%>
 			</table>
 		</div>
