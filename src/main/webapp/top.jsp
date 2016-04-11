@@ -38,7 +38,7 @@
 				<area shape="rect" coords="150,1,197,22" href="javascript:;"
 					onclick="top.location.href='indexUI/Customer.Action'" />
 				<area shape="rect" coords="210,2,304,20" href="javascript:;"
-					onclick="top.location.href='updatePassword/Customer.Action'" />
+					onclick="top.frames['mainFrame'].frames[1].location.href='updatePassword/Customer.Action'" />
 				<area shape="rect" coords="314,1,361,23" href="javascript:;"
 					onclick="top.location.href='unLogin/Customer.Action'" />
 			</map>

@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fy.fyy.back.bean.Customer;
+import com.fy.fyy.back.common.Constraint;
+import com.fy.fyy.back.common.ContextUtil;
 
 public class CustomerService extends BaseService<Customer> {
 
@@ -42,7 +44,11 @@ public class CustomerService extends BaseService<Customer> {
 
 			@Override
 			public String get(Customer bean) {
-				return "";
+				StringBuffer sb = new StringBuffer();
+				sb.append(" and id<>?");
+				bean.getQueryParams().clear();
+				bean.getQueryParams().add(((Customer) ContextUtil.getSessionAttr(Constraint.LOGIN_USER)).getId());
+				return sb.toString();
 			}
 		});
 		return list;

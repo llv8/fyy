@@ -25,11 +25,10 @@ body {
 			<td background="images/main_40.gif" style="width: 3px;">&nbsp;</td>
 			<td width="177" style="border-right: solid 1px #9ad452;"><iframe
 					name="I2" height="100%" width="177" border="0" frameborder="0"
-					src="left.jsp" id="leftFrame" name="leftFrame">
-					浏览器不支持嵌入式框架，或被配置为不显示嵌入式框架。</iframe></td>
+					src="left.jsp" id="leftFrame" name="leftFrame"> </iframe></td>
 			<td><iframe name="I1" src="welcome.jsp" height="100%"
 					width="100%" border="0" frameborder="0" id="tabFrame"
-					name="tabFrame"> 浏览器不支持嵌入式框架，或被配置为不显示嵌入式框架。</iframe></td>
+					name="tabFrame"></iframe></td>
 			<td background="images/main_42.gif" style="width: 3px;">&nbsp;</td>
 		</tr>
 	</table>

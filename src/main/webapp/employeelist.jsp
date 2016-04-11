@@ -58,7 +58,8 @@
 						</div></td>
 					<td><div>
 							<span><img src="images/tab/del2.gif" /> </span><span>[</span><a
-								href="del/${CUR_ACTION }?bean.id=${employee.id }">删除</a><span>]</span>
+								href="javascript:;"
+								onclick="if(confirm('确定要删除？')){location.href='del/${CUR_ACTION }?bean.id=${employee.id }'}">删除</a><span>]</span>
 						</div></td>
 				</tr>
 				<%

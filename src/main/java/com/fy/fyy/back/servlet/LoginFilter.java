@@ -3,7 +3,6 @@ package com.fy.fyy.back.servlet;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,12 +27,15 @@ public class LoginFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
+		// if the user unlogin and the url isn't "/loginUI/Customer.Action" and
+		// "/login/Customer.Action" , jump to login page.
 		HttpServletRequest httpReq = (HttpServletRequest) req;
 		HttpServletResponse httpResp = (HttpServletResponse) resp;
 		httpReq.setCharacterEncoding("UTF-8");
-		if (httpReq.getSession().getAttribute(Constraint.LOGIN_USER) == null
-				&& !Constraint.LOGIN_UI.equals(ServletUtil.getURI(httpReq))
-				&& !Constraint.LOGIN.equals(ServletUtil.getURI(httpReq))) {
+		String url = httpReq.getRequestURL().toString();
+		String uri = ServletUtil.getURI(httpReq, url);
+		if (httpReq.getSession().getAttribute(Constraint.LOGIN_USER) == null && !Constraint.LOGIN_UI.equals(uri)
+				&& !Constraint.LOGIN.equals(uri)) {
 			String str = "<script type='text/javascript'>top.location.href='/fyy" + Constraint.LOGIN_UI + "'</script>";
 			httpResp.setHeader("Content-type", "text/html;charset=UTF-8");
 			OutputStream stream = httpResp.getOutputStream();

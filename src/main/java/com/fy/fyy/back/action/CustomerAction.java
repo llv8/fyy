@@ -13,6 +13,7 @@ import com.fy.fyy.back.common.Constraint;
 import com.fy.fyy.back.common.ContextUtil;
 import com.fy.fyy.back.common.Log;
 import com.fy.fyy.back.common.StrUtil;
+import com.fy.fyy.back.db.DBUtil;
 import com.fy.fyy.back.service.CustomerService;
 import com.fy.fyy.back.service.EmployeeService;
 
@@ -76,17 +77,20 @@ public class CustomerAction extends BaseAction<Customer> {
 
 		if (StringUtils.isEmpty(loginName)) {
 			error("用户名不能为空");
+			logger.error("username is not null");
 			return addUI();
 		}
 
 		if (loginName.length() > 50) {
 			error("用户名太长");
+			logger.error("username'length is more than 50");
 			return addUI();
 		}
 
 		List<Customer> list = customerService.getBeanByName(bean);
 		if (!CollectionUtils.isEmpty(list) && list.size() > 0) {
 			error("该用户名已存在");
+			logger.error(bean.getLoginName() + " username already exists");
 			return addUI();
 		}
 
@@ -99,28 +103,46 @@ public class CustomerAction extends BaseAction<Customer> {
 	}
 
 	@ActionAnnotation(name = ActionModel.CustomerUpdate)
+	public String updateUI() {
+		if (isFirstUpdate) {
+			loadBean();
+		}
+		ContextUtil.getReqAttrs().put("bean", bean);
+		ContextUtil.getReqAttrs().put("employeelist", employeeService.list(new Employee()));
+		return "/addcustomer.jsp";
+	}
+
+	@ActionAnnotation(name = ActionModel.CustomerUpdate)
 	public String update() {
 		String loginName = bean.getLoginName();
 
 		if (StringUtils.isEmpty(loginName)) {
 			error("用户名不能为空");
+			logger.error("username is not null");
+			isFirstUpdate = false;
 			return addUI();
 		}
 
 		if (loginName.length() > 50) {
 			error("用户名太长");
+			logger.error("username'length is more than 50");
+			isFirstUpdate = false;
 			return addUI();
 		}
 
 		List<Customer> list = customerService.getBeanByNameIgnonreSelf(bean);
 		if (!CollectionUtils.isEmpty(list) && list.size() > 0) {
 			error("该用户名已存在");
+			logger.error(bean.getLoginName() + " username already exists");
+			isFirstUpdate = false;
 			return addUI();
 		}
 
-		Date now = new Date(Calendar.getInstance().getTimeInMillis());
-		bean.setUpdateDate(now);
-		customerService.update(bean);
+		Customer persistCustomer = DBUtil.getObjById(bean);
+		persistCustomer.setLoginName(loginName);
+		persistCustomer.setUpdateDate(new Date(Calendar.getInstance().getTimeInMillis()));
+		persistCustomer.setEmployeeId(bean.getEmployeeId());
+		customerService.update(persistCustomer);
 		return list();
 	}
 
@@ -140,6 +162,9 @@ public class CustomerAction extends BaseAction<Customer> {
 		String oldPassword = (String) ContextUtil.getReqParam("oldpassword");
 		String newPassword = (String) ContextUtil.getReqParam("newpassword");
 		String newPassword2 = (String) ContextUtil.getReqParam("newpassword2");
+		ContextUtil.getReqAttrs().put("oldpassword", oldPassword);
+		ContextUtil.getReqAttrs().put("newpassword", newPassword);
+		ContextUtil.getReqAttrs().put("newpassword2", newPassword2);
 		if (!loginUser.getPassword().equals(oldPassword)) {
 			error("旧密码不正确");
 			return updatePassword();
@@ -149,10 +174,16 @@ public class CustomerAction extends BaseAction<Customer> {
 			error("新密码为空或两次密码不一致");
 			return updatePassword();
 		}
+
+		if (newPassword.length() < 6) {
+			error("密码必须大于等于六位");
+			return updatePassword();
+		}
+
 		loginUser.setUpdateDate(now);
 		loginUser.setPassword(newPassword);
-		customerService.update(bean);
-		return list();
+		customerService.update(loginUser);
+		return "/welcome.jsp";
 	}
 
 	@ActionAnnotation(name = ActionModel.CustomerDel)

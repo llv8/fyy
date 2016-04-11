@@ -19,18 +19,20 @@
 		<div class="form">
 			<form method="post" action="updatePasswordCommit/${CUR_ACTION }">
 				<div>
-					<span>旧密码:</span> <input name="oldpassword" value="" />
+					<span>旧密码:</span> <input type="password" name="oldpassword"
+						value="${oldpassword }" />
 				</div>
 				<div>
-					<span>新密码:</span> <input name="newpassword" value="" />
+					<span>新密码:</span> <input type="password" name="newpassword"
+						value="${newpassword }" />
 				</div>
 				<div>
-					<span>确认新密码:</span> <input name="newpassword2" value="" />
+					<span>确认新密码:</span> <input type="password" name="newpassword2"
+						value="${newpassword2 }" />
 				</div>
 				<div class="action">
-					<input type="submit" value="${bean.id!=null?" 修改":"添加" }" /><input
-						type="button" value="取消"
-						onclick="location.href='list/${CUR_ACTION }'" />
+					<input type="submit" value="修改" /><input type="button" value="取消"
+						onclick="location.href='welcome.jsp'" />
 				</div>
 			</form>
 		</div>

@@ -15,11 +15,11 @@
 	<div id="content">
 
 		<div class="bt">
-			<span id="content_title">${bean.id!=null?"修改用户信息":"新增用户信息" }</span>
+			<span id="content_title">${(bean.id>0)?"修改用户信息":"新增用户信息" }</span>
 		</div>
-		<%@ include file="message.jsp" %>
+		<%@ include file="message.jsp"%>
 		<div class="form">
-			<form method="post" action="${bean.id!=null?"update":"add" }/${CUR_ACTION }">
+			<form method="post" action="${(bean.id>0)?"update":"add" }/${CUR_ACTION }">
 				<input type="hidden" name="bean.id" value="${bean.id }" />
 				<div>
 					<span>登录名:</span> <input name="bean.loginName"
@@ -28,18 +28,19 @@
 				<div>
 					<span>员工:</span> <select name="bean.employeeId">
 						<%
-						  List<Employee> employeelist = (List<Employee>)request.getAttribute( "employeelist" );
-						  for ( Employee employee : employeelist ) {
-						    pageContext.setAttribute( "employee", employee );
+							List<Employee> employeelist = (List<Employee>) request.getAttribute("employeelist");
+							for (Employee employee : employeelist) {
+								pageContext.setAttribute("employee", employee);
 						%>
-						<option value="${employee.id }">${employee.userName }</option>
+						<option value="${employee.id }"
+							${employee.id==bean.employeeId?"selected":"" }>${employee.userName }</option>
 						<%
-						  }
+							}
 						%>
 					</select>
 				</div>
 				<div class="action">
-					<input type="submit" value="${bean.id!=null?" 修改":"添加" }" /><input
+					<input type="submit" value="${bean.id>0?" 修改":"添加" }" /><input
 						type="button" value="取消"
 						onclick="location.href='list/${CUR_ACTION }'" />
 				</div>

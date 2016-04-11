@@ -6,10 +6,12 @@ import java.util.List;
 import com.fy.fyy.back.bean.BaseBean;
 import com.fy.fyy.back.common.Constraint;
 import com.fy.fyy.back.common.ContextUtil;
+import com.fy.fyy.back.db.DBUtil;
 
 public class BaseAction<T extends BaseBean> {
 
 	protected T bean;
+	protected boolean isFirstUpdate = true;
 
 	/**
 	 * default action
@@ -26,6 +28,10 @@ public class BaseAction<T extends BaseBean> {
 
 	public void setBean(T bean) {
 		this.bean = bean;
+	}
+
+	public void loadBean() {
+		bean = DBUtil.getObjById(bean);
 	}
 
 	public void info(String message) {
