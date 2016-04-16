@@ -1,3 +1,4 @@
+<%@page import="com.fy.fyy.back.bean.Customer"%>
 <%@page import="java.util.List"%>
 <%@page import="com.fy.fyy.back.bean.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -22,22 +23,34 @@
 			<form method="post" action="${(bean.id>0)?"update":"add" }/${CUR_ACTION }">
 				<input type="hidden" name="bean.id" value="${bean.id }" />
 				<div>
-					<span>登录名:</span> <input name="bean.loginName"
-						value="${bean.loginName }" />
+					<span>登录名:</span> <input name="bean.name" value="${bean.name }" />
 				</div>
 				<div>
-					<span>员工:</span> <select name="bean.employeeId">
+					<span>员工名:</span>
+					<%
+					  Customer customer = (Customer)request.getAttribute( "bean" );
+					  if ( customer.getId() != null && customer.getId() > 0 ) {
+					%>
+					<span style="text-align: left;">${employee.name }</span>
+					<%
+					  }
+					  else {
+					%>
+					<select name="bean.employeeId">
 						<%
-							List<Employee> employeelist = (List<Employee>) request.getAttribute("employeelist");
-							for (Employee employee : employeelist) {
-								pageContext.setAttribute("employee", employee);
+						  List<Employee> employeelist = (List<Employee>)request.getAttribute( "employeelist" );
+						    for ( Employee employee : employeelist ) {
+						      pageContext.setAttribute( "employee", employee );
 						%>
 						<option value="${employee.id }"
-							${employee.id==bean.employeeId?"selected":"" }>${employee.userName }</option>
+							${employee.id==bean.employeeId?"selected":"" }>${employee.name }</option>
 						<%
-							}
+						  }
 						%>
 					</select>
+					<%
+					  }
+					%>
 				</div>
 				<div class="action">
 					<input type="submit" value="${bean.id>0?" 修改":"添加" }" /><input

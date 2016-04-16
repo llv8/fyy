@@ -18,52 +18,44 @@
 	<div id="content">
 
 		<div class="bt">
-			<span id="content_title">${bean.id!=null?"修改员工信息":"新增员工信息" }</span>
+			<span id="content_title">${(bean.id>0)?"修改员工信息":"新增员工信息" }</span>
 		</div>
-		<%@ include file="message.jsp" %>
+		<%@ include file="message.jsp"%>
 		<div class="form">
-			<form method="post" action="${bean.id!=null?"update":"add" }/${CUR_ACTION }">
+			<form method="post" action="${(bean.id>0)?"update":"add" }/${CUR_ACTION }">
 				<input type="hidden" name="bean.id" value="${bean.id }" />
 				<div>
-					<span>员工名:</span> <input name="bean.userName"
-						value="${bean.userName }" />
+					<span>姓名:</span> <input name="bean.name"
+						value="${bean.name }" />
 				</div>
-				<div>
-					<span>状态:</span> <select name="bean.statusId">
-						<%
-						  List<Status> statuslist = (List<Status>)request.getAttribute( "statuslist" );
-						  for ( Status status : statuslist ) {
-						    pageContext.setAttribute( "status", status );
-						%>
-						<option value="${status.id }">${status.name }</option>
-						<%
-						  }
-						%>
-					</select>
-				</div>
+
 				<div>
 					<span>部门:</span> <select name="bean.departmentId">
+						<option value=""></option>
 						<%
-						  List<Department> departmentlist = (List<Department>)request.getAttribute( "departmentlist" );
-						  for ( Department department : departmentlist ) {
-						    pageContext.setAttribute( "department", department );
+							List<Department> departmentlist = (List<Department>) request.getAttribute("departmentlist");
+							for (Department department : departmentlist) {
+								pageContext.setAttribute("department", department);
 						%>
-						<option value="${department.id }">${department.name }</option>
+						<option value="${department.id }"
+							${department.id==bean.departmentId?"selected":"" }>${department.name }</option>
 						<%
-						  }
+							}
 						%>
 					</select>
 				</div>
 				<div>
 					<span>职位:</span> <select name="bean.positionId">
+						<option value=""></option>
 						<%
-						  List<Position> positionlist = (List<Position>)request.getAttribute( "positionlist" );
-						  for ( Position position : positionlist ) {
-						    pageContext.setAttribute( "position", position );
+							List<Position> positionlist = (List<Position>) request.getAttribute("positionlist");
+							for (Position position : positionlist) {
+								pageContext.setAttribute("position", position);
 						%>
-						<option value="${position.id }">${position.name }</option>
+						<option value="${position.id }"
+							${position.id==bean.positionId?"selected":"" }>${position.name }</option>
 						<%
-						  }
+							}
 						%>
 					</select>
 				</div>
@@ -74,7 +66,7 @@
 					<span>邮箱:</span> <input name="bean.email" value="${bean.email }" />
 				</div>
 				<div class="action">
-					<input type="submit" value="${bean.id!=null?" 修改":"添加" }" /><input
+					<input type="submit" value="${bean.id>0?" 修改":"添加" }" /><input
 						type="button" value="取消"
 						onclick="location.href='list/${CUR_ACTION }'" />
 				</div>

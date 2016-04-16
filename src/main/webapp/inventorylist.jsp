@@ -1,3 +1,4 @@
+<%@page import="com.fy.fyy.back.action.ActionModel"%>
 <%@page import="com.fy.fyy.back.bean.Inventory"%>
 <%@page import="com.fy.fyy.back.bean.Material"%>
 <%@page import="java.util.List"%>
@@ -18,8 +19,9 @@
 		<div class="bt">
 			<span id="content_title">库存列表</span>
 			<div>
-				<img src="images/tab/add.gif" /> <a href="addUI/${CUR_ACTION }">新增</a>
-
+				<ex:a id="<%=ActionModel.InventoryAdd.getId() %>"
+					href='addUI/${CUR_ACTION }'
+					text='<%=ActionModel.InventoryAdd.getName() %>' />
 			</div>
 		</div>
 		<%@ include file="message.jsp"%>
@@ -35,33 +37,35 @@
 					<th>更新日期</th>
 					<th>创建日期</th>
 					<th>备注</th>
-					<th>编辑</th>
-					<th>删除</th>
+					<th>操作</th>
 				</tr>
 				<%
-					List<Inventory> list = (List<Inventory>) request.getAttribute("beanList");
-					for (Inventory inventory : list) {
-						pageContext.setAttribute("inventory", inventory);
+				  List<Inventory> list = (List<Inventory>)request.getAttribute( "beanList" );
+				  for ( Inventory inventory : list ) {
+				    pageContext.setAttribute( "inventory", inventory );
 				%>
 				<tr>
 					<td>${inventory.material.name }</td>
 					<td>${inventory.type.name }</td>
 					<td>${inventory.num }</td>
-					<td>${inventory.customer.loginName }</td>
+					<td>${inventory.customer.name }</td>
 					<td>${inventory.updateDate }</td>
 					<td>${inventory.createDate }</td>
 					<td>${inventory.note }</td>
 					<td><div>
-							<img src="images/tab/update.gif" /><span> [</span><a
-								href="addUI/${CUR_ACTION }?bean.id=${inventory.id }">编辑</a><span>]</span>
-						</div></td>
-					<td><div>
-							<span><img src="images/tab/del2.gif" /> </span><span>[</span><a
-								href="del/${CUR_ACTION }?bean.id=${inventory.id }">删除</a><span>]</span>
+							<span> <ex:a
+									id="<%=ActionModel.InventoryUpdate.getId() %>"
+									href='updateUI/${CUR_ACTION }?bean.id=${inventory.id }'
+									text='<%="["+ActionModel.InventoryUpdate.getName()+"]" %>' />
+							</span> <span> <ex:a id="<%=ActionModel.InventoryDel.getId() %>"
+									href='javascript:;'
+									onclick='delCfm("${CUR_ACTION }","${inventory.id}")'
+									text='<%="["+ActionModel.InventoryDel.getName()+"]" %>' /></span>
+
 						</div></td>
 				</tr>
 				<%
-					}
+				  }
 				%>
 			</table>
 		</div>

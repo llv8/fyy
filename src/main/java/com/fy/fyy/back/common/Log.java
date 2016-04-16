@@ -1,6 +1,5 @@
 package com.fy.fyy.back.common;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +39,6 @@ public class Log {
 
 	private static String msg(String msg) {
 		Customer customer = (Customer) ContextUtil.getSessionAttr(Constraint.LOGIN_USER);
-		return (customer == null ? "" : " [" + customer.getLoginName() + "] ") + msg;
+		return (customer == null ? "" : " [" + customer.getName() + "] ") + msg;
 	}
 }

@@ -1,3 +1,6 @@
+<%@page import="java.util.List"%>
+<%@page import="com.fy.fyy.back.permission.ModelNode"%>
+<%@page import="com.fy.fyy.back.common.Constraint"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="common.jsp"%>
@@ -6,26 +9,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title></title>
-
-
 </head>
-
 <body>
 	<div class="left_tree">
 		<img src="images/left/top.gif">
-			<ul>
+			<div>
 
-				<li><a href="javascript:;"
-					onclick="top.frames['mainFrame'].frames[1].location.href='list/Employee.Action'">员工管理</a></li>
-				<li><a href="javascript:;"
-					onclick="top.frames['mainFrame'].frames[1].location.href='list/Material.Action'">物料管理</a></li>
-				<li><a href="javascript:;"
-					onclick="top.frames['mainFrame'].frames[1].location.href='list/Inventory.Action'">库存管理</a></li>
-				<li><a href="javascript:;"
-					onclick="top.frames['mainFrame'].frames[1].location.href='list/InventoryReport.Action'">库存统计</a></li>
-				<li><a href="javascript:;"
-					onclick="top.frames['mainFrame'].frames[1].location.href='list/Customer.Action'">用户管理</a></li>
-			</ul>
+				<%
+				  List<ModelNode> list = (List<ModelNode>)request.getSession().getAttribute( Constraint.LOGIN_PERM_ROOT );
+				  for ( ModelNode modelNode : list ) {
+				    pageContext.setAttribute( "modelNode", modelNode );
+				%>
+				<div>
+					<ex:a id="${modelNode.id }" href='javascript:;'
+						onclick='menuGo("${modelNode.href }")' text='${modelNode.text }' />
+				</div>
+				<%
+				  }
+				%>
+
+			</div>
 	</div>
 </body>
 </html>

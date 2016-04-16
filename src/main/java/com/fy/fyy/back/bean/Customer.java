@@ -5,19 +5,19 @@ import java.sql.Date;
 
 public class Customer extends BaseBean {
 
-  private String loginName;
+  private String name;
   private String password;
   private Date createDate;
   private Date updateDate;
   private Employee employee;
   private Integer employeeId;
 
-  public String getLoginName() {
-    return loginName;
+  public String getName() {
+    return name;
   }
 
-  public void setLoginName( String loginName ) {
-    this.loginName = loginName;
+  public void setName( String name ) {
+    this.name = name;
   }
 
   public String getPassword() {

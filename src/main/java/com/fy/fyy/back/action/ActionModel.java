@@ -6,50 +6,80 @@ public enum ActionModel {
    * 
    */
 
-  Customer(00101001, "用户管理"),
-  CustomerAdd(00102002, ActionModel.ADD),
-  CustomerUpdate(00102003, ActionModel.UPDATE),
-  CustomerDel(00102004, ActionModel.DEL),
-  CustomerQuery(00102005, ActionModel.QUERY),
+  Material(101001, "物料管理", null),
+  MaterialAdd(102001, ActionModel.ADD, 101001),
+  MaterialUpdate(102002, ActionModel.UPDATE, 101001),
+  MaterialDel(102003, ActionModel.DEL, 101001),
+  MaterialQuery(102004, ActionModel.QUERY, 101001),
 
-  Employee(00201001, "员工管理"),
-  EmployeeAdd(00202002, ActionModel.ADD),
-  EmployeeUpdate(00202003, ActionModel.UPDATE),
-  EmployeeDel(00202004, ActionModel.DEL),
-  EmployeeQuery(00202005, ActionModel.QUERY),
+  Inventory(201001, "库存管理", null),
+  InventoryAdd(202001, ActionModel.ADD, 201001),
+  InventoryUpdate(202002, ActionModel.UPDATE, 201001),
+  InventoryDel(202003, ActionModel.DEL, 201001),
+  InventoryQuery(202004, ActionModel.QUERY, 201001),
 
-  Material(00301001, "物料管理"),
-  MaterialAdd(00302002, ActionModel.ADD),
-  MaterialUpdate(00302003, ActionModel.UPDATE),
-  MaterialDel(00302004, ActionModel.DEL),
-  MaterialQuery(00302005, ActionModel.QUERY),
+  InventoryReport(301001, "库存统计", null),
+  InventoryReportQuery(302001, "总统计", 301001),
 
-  Inventory(00401001, "物料管理"),
-  InventoryAdd(00402002, ActionModel.ADD),
-  InventoryUpdate(00402003, ActionModel.UPDATE),
-  InventoryDel(00402004, ActionModel.DEL),
-  InventoryQuery(00402005, ActionModel.QUERY),
+  Employee(401001, "员工管理", null),
+  EmployeeAdd(402001, ActionModel.ADD, 401001),
+  EmployeeUpdate(402002, ActionModel.UPDATE, 401001),
+  EmployeeDel(402003, ActionModel.DEL, 401001),
+  EmployeeQuery(402004, ActionModel.QUERY, 401001),
 
-  InventoryReport(00501001, "库存统计"),
-  InventoryReportQuery(00502001, "总统计"),
+  Permission(501001, "权限管理", null),
+  RoleAdd(502001, ActionModel.ADD, 501001),
+  RoleUpdate(502002, ActionModel.UPDATE, 501001),
+  RoleDel(502003, ActionModel.DEL, 501001),
+  RoleQuery(502004, ActionModel.QUERY, 501001),
+  RolePermission(502005, ActionModel.ROLE_PERM, 501001),
 
-  Role(00601001, "权限管理"),
-  RoleAdd(00602002, ActionModel.ADD),
-  RoleUpdate(00602003, ActionModel.UPDATE),
-  RoleDel(00602004, ActionModel.DEL),
-  RoleQuery(00602005, ActionModel.QUERY),
-  RolePerssion(00602006, "分配权限");
+  Customer(601001, "用户管理", null),
+  CustomerAdd(602001, ActionModel.ADD, 601001),
+  CustomerUpdate(602002, ActionModel.UPDATE, 601001),
+  CustomerDel(602003, ActionModel.DEL, 601001),
+  CustomerQuery(602004, ActionModel.QUERY, 601001),
+  CustomerRoleAssign(602005, ActionModel.CUST_PERM, 601001);
 
   private static final String ADD = "新增";
   private static final String UPDATE = "编辑";
   private static final String DEL = "删除";
   private static final String QUERY = "查询";
+  private static final String CUST_PERM = "用户权限";
+  private static final String ROLE_PERM = "角色权限";
 
   private String name;
-  private int id;
+  private Integer id;
+  private Integer parentId;
 
-  private ActionModel( int id, String name ) {
+  private ActionModel( Integer id, String name, Integer parentId ) {
     this.name = name;
     this.id = id;
+    this.parentId = parentId;
   }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName( String name ) {
+    this.name = name;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId( Integer id ) {
+    this.id = id;
+  }
+
+  public Integer getParentId() {
+    return parentId;
+  }
+
+  public void setParentId( Integer parentId ) {
+    this.parentId = parentId;
+  }
+
 }

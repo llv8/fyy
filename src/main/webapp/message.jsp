@@ -4,53 +4,37 @@
 
 <div id="message">
 	<%
-		List<String> errors = (List<String>) request.getAttribute("error");
-		List<String> warns = (List<String>) request.getAttribute("warn");
-		List<String> infos = (List<String>) request.getAttribute("info");
-	%>
-	<%
-		if (errors != null) {
-	%>
-	<div class="error">
-		<%
-			for (String message : errors) {
-					pageContext.setAttribute("message", message);
-		%>
-		<li>${message }</li>
-		<%
-			}
-		%>
-	</div>
-	<%
-		} else if (warns != null) {
+	  List<String> errors = (List<String>)request.getAttribute( "error" );
+	  List<String> infos = (List<String>)request.getAttribute( "info" );
 	%>
 
-	<div class="warn">
+	<div class="error">
+
 		<%
-			for (String message : warns) {
-					pageContext.setAttribute("message", message);
+		  if ( errors != null ) {
+		    for ( String message : errors ) {
+		      pageContext.setAttribute( "message", message );
 		%>
 		<li>${message }</li>
 		<%
-			}
+		  }
+		  }
 		%>
 	</div>
-	<%
-		} else if (infos != null) {
-	%>
+
 
 	<div class="info">
+
 		<%
-			for (String message : infos) {
-					pageContext.setAttribute("message", message);
+		  if ( infos != null ) {
+		    for ( String message : infos ) {
+		      pageContext.setAttribute( "message", message );
 		%>
 		<li>${message }</li>
 		<%
-			}
+		  }
+		  }
 		%>
 	</div>
-	<%
-		}
-	%>
 
 </div>

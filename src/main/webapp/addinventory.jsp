@@ -20,11 +20,11 @@
 	<div id="content">
 
 		<div class="bt">
-			<span id="content_title">${bean.id!=null?"修改库存":"新增库存" }</span>
+			<span id="content_title">${bean.id>0?"修改库存":"新增库存" }</span>
 		</div>
 		<%@ include file="message.jsp" %>
 		<div class="form">
-			<form method="post" action="${bean.id!=null?"update":"add" }/${CUR_ACTION }">
+			<form method="post" action="${bean.id>0?"update":"add" }/${CUR_ACTION }">
 				<input type="hidden" name="bean.id" value="${bean.id }" />
 				<div>
 					<span>名称:</span> <select name="bean.materialId">
@@ -33,7 +33,7 @@
 						  for ( Material material : materiallist ) {
 						    pageContext.setAttribute( "material", material );
 						%>
-						<option value="${material.id }">${material.name }</option>
+						<option ${material.id==bean.materialId?"selected":"" } value="${material.id }">${material.name }</option>
 						<%
 						  }
 						%>
@@ -46,7 +46,7 @@
 						  for ( Type type : typelist ) {
 						    pageContext.setAttribute( "type", type );
 						%>
-						<option value="${type.id }">${type.name }</option>
+						<option ${type.id==bean.typeId?"selected":"" } value="${type.id }">${type.name }</option>
 						<%
 						  }
 						%>
@@ -59,7 +59,7 @@
 					<span>备注:</span> <input name="bean.note" value="${bean.note }" />
 				</div>
 				<div class="action">
-					<input type="submit" value="${bean.id!=null?" 修改":"添加" }" /><input
+					<input type="submit" value="${bean.id>0?" 修改":"添加" }" /><input
 						type="button" value="取消"
 						onclick="location.href='list/${CUR_ACTION }'" />
 				</div>

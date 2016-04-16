@@ -6,54 +6,51 @@ import java.util.List;
 import com.fy.fyy.back.bean.BaseBean;
 import com.fy.fyy.back.common.Constraint;
 import com.fy.fyy.back.common.ContextUtil;
-import com.fy.fyy.back.db.DBUtil;
 
-public class BaseAction<T extends BaseBean> {
 
-	protected T bean;
-	protected boolean isFirstUpdate = true;
+public abstract class BaseAction<T extends BaseBean> {
 
-	/**
-	 * default action
-	 * 
-	 * @return
-	 */
-	public String exec() {
-		return Constraint.INDEX_UI;
-	}
+  protected T bean;
 
-	public T getBean() {
-		return bean;
-	}
+  /**
+   * default action
+   * 
+   * @return
+   */
+  public String exec() {
+    return Constraint.INDEX_UI;
+  }
 
-	public void setBean(T bean) {
-		this.bean = bean;
-	}
+  public T getBean() {
+    return bean;
+  }
 
-	public void loadBean() {
-		bean = DBUtil.getObjById(bean);
-	}
+  public void setBean( T bean ) {
+    this.bean = bean;
+  }
 
-	public void info(String message) {
-		message("info", message);
-	}
+  public void info( String message ) {
+    message( "info", message );
+  }
 
-	public void warn(String message) {
-		message("warn", message);
-	}
+  public void warn( String message ) {
+    message( "warn", message );
+  }
 
-	public void error(String message) {
-		message("error", message);
-	}
+  public void error( String message ) {
+    message( "error", message );
+  }
 
-	private void message(String key, String value) {
-		Object obj = ContextUtil.getReqAttr(key);
-		if (obj == null) {
-			List<String> list = new ArrayList<>();
-			list.add(value);
-			ContextUtil.getReqAttrs().put(key, list);
-		} else {
-			((List) obj).add(value);
-		}
-	}
+  private void message( String key, String value ) {
+    Object obj = ContextUtil.getReqAttr( key );
+    if ( obj == null ) {
+      List<String> list = new ArrayList<>();
+      list.add( value );
+      ContextUtil.getReqAttrs().put( key, list );
+    }
+    else {
+      ( (List)obj ).add( value );
+    }
+  }
+
 }

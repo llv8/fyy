@@ -16,7 +16,7 @@
 					src="images/login/left.gif">
 				<div class='login_center'>
 					<span class="tip_color">用户</span> <input type="text"
-						name="bean.loginName"> <span class="tip_color">密码</span> <input
+						name="bean.name"> <span class="tip_color">密码</span> <input
 						type="password" name="bean.password">
 					<div class="login_action">
 						<img src="images/login/dl.gif" usemap="#Map">

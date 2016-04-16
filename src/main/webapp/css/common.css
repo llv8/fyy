@@ -118,17 +118,15 @@
 	padding: 20px;
 }
 
-.left_tree ul.disc {
-	list-style-type: disc;
+.left_tree>div {
+	width: 80%;
+	margin: 20px auto;
+	font-size: 15px;
+	font-weight: bold;
 }
 
-.left_tree li {
-	padding: 10px;
-}
-
-.left_tree ul {
-	width: 50%;
-	margin: 0 auto;
+.left_tree>div>div {
+	padding: 5px;
 }
 
 a:link, a:visited {
@@ -201,12 +199,8 @@ a:link, a:visited {
 
 #content .bt div {
 	float: right;
-	margin-right: 80px;
+	margin: 10px 80px 0 0;
 	overflow: hidden;
-}
-
-#content .bt div * {
-	margin-top: 10px;
 }
 
 #content .bt {

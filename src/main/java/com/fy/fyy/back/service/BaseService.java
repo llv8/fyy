@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fy.fyy.back.bean.BaseBean;
 import com.fy.fyy.back.common.StrUtil;
@@ -16,24 +14,22 @@ import com.fy.fyy.back.db.DBUtil;
 
 public class BaseService<T extends BaseBean> {
 
-  private static Logger logger = LoggerFactory.getLogger( BaseService.class );
-
-  protected List<T> getList( T bean, QuerySqlStr<T> querySqlStr ) {
+  protected List<T> getList( T searchBean, QuerySqlStr<T> querySqlStr ) {
     List<T> result = null;
-    StringBuffer sb = new StringBuffer( DBUtil.getSQL( bean.getClass() ) );
-    if ( querySqlStr != null ) sb.append( querySqlStr.get( bean ) );
-    result = DBUtil.queryBeanList( sb.toString(), bean );
-    if ( bean.getPageInfo().isPageFlag() ) {
-      bean.getPageInfo().setCountPage(
-          bean.getPageInfo().getCountRecord() / bean.getPageInfo().getPageSize() + ( bean.getPageInfo().getCountRecord() % bean.getPageInfo().getPageSize() == 0 ? 0 : 1 ) );
-      if ( bean.getPageInfo().getCountPage() == 0 ) bean.getPageInfo().setCountPage( 1 );
+    StringBuffer sb = new StringBuffer( DBUtil.getSQL( searchBean.getClass() ) );
+    if ( querySqlStr != null ) sb.append( querySqlStr.get( searchBean ) );
+    result = DBUtil.queryBeanList( sb.toString(), searchBean );
+    if ( searchBean.getPageInfo().isPageFlag() ) {
+      searchBean.getPageInfo().setCountPage( searchBean.getPageInfo().getCountRecord() / searchBean.getPageInfo().getPageSize()
+          + ( searchBean.getPageInfo().getCountRecord() % searchBean.getPageInfo().getPageSize() == 0 ? 0 : 1 ) );
+      if ( searchBean.getPageInfo().getCountPage() == 0 ) searchBean.getPageInfo().setCountPage( 1 );
     }
     return result;
   }
 
-  public T getBean( T bean ) {
+  public static <T extends BaseBean> T getBean( T searchBean ) {
 
-    return DBUtil.getObjById( bean );
+    return DBUtil.getObjById( searchBean );
 
   }
 
@@ -86,8 +82,36 @@ public class BaseService<T extends BaseBean> {
     return DBUtil.update( bean );
   }
 
-  public static Logger getLogger() {
-    return logger;
+  public List<T> getBeanByName( T searchBean ) {
+    List<T> list = getList( searchBean, new QuerySqlStr<T>() {
+
+      @Override
+      public String get( T searchBean ) {
+        StringBuffer sb = new StringBuffer();
+        sb.append( " and name=?" );
+        searchBean.getQueryParams().clear();
+        searchBean.getQueryParams().add( searchBean.getName() );
+        return sb.toString();
+      }
+    } );
+    return list;
+  }
+
+  public List<T> getBeanByNameIgnonreSelf( T searchBean ) {
+    List<T> list = getList( searchBean, new QuerySqlStr<T>() {
+
+      @Override
+      public String get( T searchBean ) {
+        StringBuffer sb = new StringBuffer();
+        sb.append( " and name=?" );
+        sb.append( " and id<>?" );
+        searchBean.getQueryParams().clear();
+        searchBean.getQueryParams().add( searchBean.getName() );
+        searchBean.getQueryParams().add( searchBean.getId() );
+        return sb.toString();
+      }
+    } );
+    return list;
   }
 
 }

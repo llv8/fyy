@@ -1,3 +1,4 @@
+<%@page import="com.fy.fyy.back.action.ActionModel"%>
 <%@page import="com.fy.fyy.back.bean.Material"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -17,8 +18,9 @@
 		<div class="bt">
 			<span id="content_title">物料列表</span>
 			<div>
-				<img src="images/tab/add.gif" /> <a href="addUI/${CUR_ACTION }">新增</a>
-
+				<ex:a id="<%=ActionModel.MaterialAdd.getId() %>"
+					href='addUI/${CUR_ACTION }'
+					text='<%=ActionModel.MaterialAdd.getName() %>' />
 			</div>
 		</div>
 		<%@ include file="message.jsp"%>
@@ -33,13 +35,13 @@
 					<th>更新日期</th>
 					<th>创建日期</th>
 					<th>备注</th>
-					<th>编辑</th>
-					<th>删除</th>
+					<th>操作</th>
 				</tr>
 				<%
-					List<Material> list = (List<Material>) request.getAttribute("beanList");
-					for (Material marterial : list) {
-						pageContext.setAttribute("marterial", marterial);
+				  List<Material> list = (List<Material>)request.getAttribute( "beanList" );
+				  System.out.println( list );
+				  for ( Material marterial : list ) {
+				    pageContext.setAttribute( "marterial", marterial );
 				%>
 				<tr>
 					<td>${marterial.name }</td>
@@ -49,16 +51,18 @@
 					<td>${marterial.createDate }</td>
 					<td>${marterial.note }</td>
 					<td><div>
-							<img src="images/tab/update.gif" /><span> [</span><a
-								href="addUI/${CUR_ACTION }?bean.id=${marterial.id }">编辑</a><span>]</span>
-						</div></td>
-					<td><div>
-							<span><img src="images/tab/del2.gif" /> </span><span>[</span><a
-								href="del/${CUR_ACTION }?bean.id=${marterial.id }">删除</a><span>]</span>
+
+							<span> <ex:a id="<%=ActionModel.MaterialUpdate.getId() %>"
+									href='updateUI/${CUR_ACTION }?bean.id=${marterial.id }'
+									text='<%="["+ActionModel.MaterialUpdate.getName()+"]" %>' />
+							</span> <span> <ex:a id="<%=ActionModel.MaterialDel.getId() %>"
+									href='javascript:;'
+									onclick='delCfm("${CUR_ACTION }","${marterial.id}")'
+									text='<%="["+ActionModel.MaterialDel.getName()+"]" %>' /></span>
 						</div></td>
 				</tr>
 				<%
-					}
+				  }
 				%>
 			</table>
 		</div>

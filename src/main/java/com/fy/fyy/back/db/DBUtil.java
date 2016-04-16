@@ -49,6 +49,7 @@ public class DBUtil {
 			dataSource.setAcquireRetryDelay(1000);
 		} catch (Exception e) {
 			logger.error("data source init failure!", e);
+			throw new RuntimeException("数据库初始化失败！");
 		}
 	}
 
@@ -59,6 +60,7 @@ public class DBUtil {
 				conn = dataSource.getConnection();
 			} catch (SQLException e) {
 				logger.error("get connection failure!", e);
+				throw new RuntimeException("数据库连接失败！");
 			}
 		}
 		return conn;
@@ -84,7 +86,7 @@ public class DBUtil {
 			return new QueryRunner().query(conn, sql, getBeanListHandler(bean), bean.getQueryParams().toArray());
 		} catch (Exception e) {
 			logger.error("query failure!", e);
-			return null;
+			throw new RuntimeException("数据库查询失败！");
 		} finally {
 			bean.getQueryParams().clear();
 			if (conn != null) {
@@ -107,7 +109,7 @@ public class DBUtil {
 			return new QueryRunner().update(conn, sql, objs);
 		} catch (Exception e) {
 			logger.error("update failure!", e);
-			return 0;
+			throw new RuntimeException("数据库更新操作失败！");
 		} finally {
 
 			if (conn != null) {
@@ -164,6 +166,7 @@ public class DBUtil {
 					values.add(obj.getClass().getMethod(methodName).invoke(obj));
 				} catch (Exception e) {
 					logger.error("getInsertSql reflect method invoke error.");
+					throw new RuntimeException("数据库操作失败！");
 				}
 
 			}
@@ -189,6 +192,7 @@ public class DBUtil {
 					values.add(obj.getClass().getMethod(methodName).invoke(obj));
 				} catch (Exception e) {
 					logger.error("getUpdateSql reflect method invoke error.");
+					throw new RuntimeException("数据库操作失败！");
 				}
 
 			}

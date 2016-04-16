@@ -5,7 +5,7 @@ import java.sql.Date;
 
 public class Employee extends BaseBean {
 
-  private String userName;
+  private String name;
   private Date createDate;
   private Date updateDate;
   private Status status;
@@ -17,12 +17,13 @@ public class Employee extends BaseBean {
   private Department department;
   private Integer departmentId;
 
-  public String getUserName() {
-    return userName;
+  
+  public String getName() {
+    return name;
   }
 
-  public void setUserName( String userName ) {
-    this.userName = userName;
+  public void setName( String name ) {
+    this.name = name;
   }
 
   public Position getPosition() {

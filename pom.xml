@@ -61,18 +61,38 @@
 			<artifactId>c3p0</artifactId>
 			<version>0.9.1.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		<!-- <outputDirectory>${CATALINA_HOME}/webapps/${project.artifactId}/${project.artifactId}</outputDirectory>-->
+		<!-- <outputDirectory>${CATALINA_HOME}/webapps/${project.artifactId}/${project.artifactId}</outputDirectory> -->
 		<!-- <sourceDirectory>src/main/java</sourceDirectory> -->
 		<plugins>
 			<plugin>
@@ -102,7 +122,7 @@
 					<username>admin</username>
 					<password>admin</password>
 					<path>/${project.artifactId}</path>
-				    <update>true</update>
+					<update>true</update>
 				</configuration>
 			</plugin>
 		</plugins>

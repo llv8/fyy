@@ -23,122 +23,145 @@ import com.fy.fyy.back.common.Log;
 import com.fy.fyy.back.common.StrUtil;
 import com.fy.fyy.back.exception.NullActionException;
 
+
 public class ServletUtil {
-	private static Log logger = Log.getInstance(ServletUtil.class);
 
-	public static Pair<String, String> getCalledActionAndMethod(HttpServletRequest req, String uri)
-			throws NullActionException {
-		if (StringUtils.isEmpty(uri))
-			throw new NullActionException("the uri is null!");
-		uri = StrUtil.trim(uri.trim(), StrUtil.C_SLASH);
-		// if the uri is loginUI/Customer.Action, then parse the uri to
-		// class="CustomerAction",method="loginUI"
-		String[] uris = uri.split(StrUtil.SLASH);
-		if (StringUtils.countMatches(uris[uris.length - 1], StrUtil.DOT) == 1) {
-			req.setAttribute("CUR_ACTION", uris[uris.length - 1]);
-			String clazz = uris[uris.length - 1].replace(StrUtil.DOT, StrUtil.EMPTY);
-			String method = (uris.length == 2) ? uris[0] : uris.length == 1 ? "exec" : null;
-			if (method == null)
-				throw new NullActionException(uri + " uri is invalid");
-			return new MutablePair<String, String>(clazz, method);
-		} else {
-			throw new NullActionException(uri + " uri is invalid");
-		}
-	}
+  private static Log logger = Log.getInstance( ServletUtil.class );
 
-	public static void go(String uri, Boolean isRedirect, HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		if (isRedirect) {
-			resp.sendRedirect(req.getContextPath() + uri);
-		} else {
-			req.getRequestDispatcher(uri).forward(req, resp);
-		}
-	}
+  public static Pair<String, String> getCalledActionAndMethod( HttpServletRequest req, String uri ) throws NullActionException {
+    if ( StringUtils.isEmpty( uri ) ) throw new NullActionException( "the uri is null!" );
+    uri = StrUtil.trim( uri.trim(), StrUtil.C_SLASH );
+    // if the uri is loginUI/Customer.Action, then parse the uri to
+    // class="CustomerAction",method="loginUI"
+    String[] uris = uri.split( StrUtil.SLASH );
+    if ( StringUtils.countMatches( uris[uris.length - 1], StrUtil.DOT ) == 1 ) {
+      req.setAttribute( "CUR_ACTION", uris[uris.length - 1] );
+      String clazz = uris[uris.length - 1].replace( StrUtil.DOT, StrUtil.EMPTY );
+      String method = ( uris.length == 2 ) ? uris[0] : uris.length == 1 ? "exec" : null;
+      if ( method == null ) throw new NullActionException( uri + " uri is invalid" );
+      return new MutablePair<String, String>( clazz, method );
+    }
+    else {
+      throw new NullActionException( uri + " uri is invalid" );
+    }
+  }
 
-	public static Pair<String, Boolean> exec(HttpServletRequest req, String uri) {
-		Pair<String, String> class2Method = null;
-		try {
-			class2Method = getCalledActionAndMethod(req, uri);
-		} catch (NullActionException e) {
-			// if the url is not exists,then go to 404.jsp
-			logger.error(e.getMessage());
-			return new MutablePair<String, Boolean>("/404.jsp", false);
-		}
+  public static void go( String uri, Boolean isRedirect, HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
+    if ( isRedirect ) {
+      redirect( uri, req, resp );
+    }
+    else {
+      forward( uri, req, resp );
+    }
+  }
 
-		BaseAction action = null;
-		try {
-			action = (BaseAction) Class.forName(Constraint.PKG_ACTION + class2Method.getLeft()).newInstance();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			// if the request action throw exception, then go to the refer
-			// action.
-			return deal500Catch(req, "Class.forName error", e);
-		}
+  public static void redirect( String uri, HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
+    resp.sendRedirect( req.getContextPath() + uri );
+  }
 
-		ContextUtil.copyAttrs(req, action);
+  public static void forward( String uri, HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
+    req.getRequestDispatcher( uri ).forward( req, resp );
+  }
 
-		try {
-			BeanUtils.populate(action, req.getParameterMap());
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			return deal500Catch(req, "BeanUtils.populate error", e);
+  public static void exec( HttpServletRequest req, HttpServletResponse resp, String uri ) {
+    Pair<String, String> class2Method = null;
+    try {
+      try {
+        class2Method = getCalledActionAndMethod( req, uri );
+      }
+      catch ( NullActionException e ) {
+        // if the url is not exists,then go to 404.jsp
+        logger.error( "action is not exists", e );
+        throw new RuntimeException();
+      }
 
-		}
+      String actionStr = class2Method.getLeft();
+      String methodStr = class2Method.getRight();
+      BaseAction action = null;
+      try {
+        action = (BaseAction)Class.forName( Constraint.PKG_ACTION + actionStr ).newInstance();
+      }
+      catch ( InstantiationException | IllegalAccessException | ClassNotFoundException e ) {
+        // if the request action throw exception, then go to the refer
+        // action.
+        logger.error( "Class.forName error", e );
+        throw new RuntimeException();
+      }
 
-		Method method;
-		try {
-			method = action.getClass().getMethod(class2Method.getRight());
-		} catch (NoSuchMethodException e) {
-			logger.error(class2Method.getLeft() + "." + class2Method.getRight() + " is not exists");
-			return new MutablePair<String, Boolean>("/404.jsp", false);
-		} catch (SecurityException e) {
-			return deal500Catch(req, "action.getClass().getMethod error", e);
-		}
+      try {
+        BeanUtils.populate( action, req.getParameterMap() );
+      }
+      catch ( IllegalAccessException | InvocationTargetException e ) {
+        logger.error( "BeanUtils.populate error", e );
+        throw new RuntimeException();
+      }
 
-		Object uriObj = null;
-		try {
-			uriObj = method.invoke(action);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			return deal500Catch(req, " method.invoke error", e);
-		}
+      ContextUtil.copyToAttrs( req );
 
-		ContextUtil.copyAttrs(action, req);
+      // main section
+      Method actionMothed = getMethod( action, methodStr );
+      Method validMethod = getMethod( action, "valid" + StringUtils.capitalize( methodStr ) );
+      String fowardUri;
+      try {
+        fowardUri = execAction( action, actionMothed, validMethod );
+      }
+      catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException e ) {
+        logger.error( "action method invoke error", e );
+        throw new RuntimeException();
+      }
 
-		return new MutablePair<String, Boolean>(uriObj.toString(),
-				method.getAnnotation(RedirectAnnotation.class) != null);
-	}
+      ContextUtil.copyFromAttrs( req );
 
-	public static String getURI(HttpServletRequest req, String url) {
-		return url.replace(getBasePath(req), "");
-	}
+      go( fowardUri, actionMothed.getAnnotation( RedirectAnnotation.class ) != null, req, resp );
 
-	public static String getHost(HttpServletRequest req) {
-		return req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
-	}
+    }
+    catch ( ServletException | IOException e1 ) {
+      logger.error( "servlet rediert or forward error" );
+    }
+  }
 
-	public static String getBasePath(HttpServletRequest req) {
-		return getHost(req) + req.getContextPath();
-	}
+  private static Method getMethod( BaseAction action, String method ) {
+    try {
+      return action.getClass().getMethod( method );
+    }
+    catch ( NoSuchMethodException e ) {}
+    catch ( SecurityException e ) {}
+    return null;
+  }
 
-	public static void setErrorAttribute(HttpServletRequest req) {
-		List<String> list = new ArrayList<>();
-		list.add("系统错误,请与管理员联系");
-		req.setAttribute("error", list);
-	}
+  private static String execAction( BaseAction action, Method actionMethod, Method validMethod )
+      throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    String forwardUri = null;
+    Object validObj = null;
+    if ( validMethod != null ) {
+      validObj = validMethod.invoke( action );
+    }
 
-	public static Pair<String, Boolean> getRefererPair(HttpServletRequest req) {
-		String uri = null;
-		String referrer = req.getHeader("referer");
-		if (StringUtils.isEmpty(referrer) || !referrer.startsWith(getHost(req))) {
-			uri = "/500.jsp";
-		} else {
-			uri = getURI(req, referrer);
-		}
+    if ( validObj == null ) {
+      forwardUri = actionMethod.invoke( action ).toString();
+    }
+    else {
+      forwardUri = validObj.toString();
+    }
+    return forwardUri;
+  }
 
-		return new MutablePair<String, Boolean>(uri, false);
-	}
+  public static String getURI( HttpServletRequest req, String url ) {
+    return url.replace( getBasePath( req ), "" );
+  }
 
-	public static Pair<String, Boolean> deal500Catch(HttpServletRequest req, String msg, Throwable e) {
-		logger.error(msg, e);
-		setErrorAttribute(req);
-		return getRefererPair(req);
-	}
+  public static String getHost( HttpServletRequest req ) {
+    return req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
+  }
+
+  public static String getBasePath( HttpServletRequest req ) {
+    return getHost( req ) + req.getContextPath();
+  }
+
+  public static void setErrorAttribute( HttpServletRequest req ) {
+    List<String> list = new ArrayList<>();
+    list.add( "系统错误,请与管理员联系" );
+    req.setAttribute( "error", list );
+  }
+
 }

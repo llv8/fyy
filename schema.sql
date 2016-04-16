@@ -10,7 +10,7 @@ set character_set_connection=utf8;
 use fyy;
 create table Employee(
  id int(10) not null primary key auto_increment,
- userName varchar(20) not null,
+ name varchar(20) not null,
  createDate DATE,
  updateDate DATE,
  email varchar(100) not null,
@@ -23,16 +23,14 @@ create table Employee(
 
 create table Customer(
  id int(10) not null primary key auto_increment,
- loginName varchar(20) not null,
+ name varchar(20) not null,
  password varchar(256) not null,
  createDate DATE,
  updateDate DATE,
- employeeId int(10) not null,
- CONSTRAINT FOREIGN KEY (employeeId) REFERENCES Employee(id)
+ employeeId int(10)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-insert into Employee (userName,createDate,updateDate,email,phone,departmentId,positionId,statusId) values('吕温',now(),now(),'lvwen2046@gmail.com','18161907873',1,1,1);
-insert into Customer (loginName,password,createDate,updateDate,employeeId) values('lw','123',now(),now(),1);
+insert into Customer (name,password,createDate,updateDate,employeeId) values('admin','admin',now(),now(),null);
 
 create table Material(
  id int(10) not null primary key auto_increment,
@@ -55,4 +53,28 @@ create table Inventory(
  note varchar(256),
  CONSTRAINT FOREIGN KEY (customerId) REFERENCES Customer(id),
  CONSTRAINT FOREIGN KEY (materialId) REFERENCES Material(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+create table Role(
+ id int(10) not null primary key auto_increment,
+ name varchar(20) not null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+create table RolePermission(
+ id int(10) not null primary key auto_increment,
+ modelId int(10) not null,
+ roleId int(10) not null,
+ isPerm char(1) default 0,
+ CONSTRAINT FOREIGN KEY (roleId) REFERENCES Role(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+create table CustomerRole(
+ id int(10) not null primary key auto_increment,
+ customerId int(10) not null,
+ roleId int(10) not null,
+ isPerm boolean,
+ CONSTRAINT FOREIGN KEY (customerId) REFERENCES Customer(id),
+ CONSTRAINT FOREIGN KEY (roleId) REFERENCES Role(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -20,12 +20,12 @@
 		<div class="bt">
 			<span id="content_title">${bean.id!=null?"修改物料":"新增物料" }</span>
 		</div>
-		<%@ include file="message.jsp" %>
+		<%@ include file="message.jsp"%>
 		<div class="form">
 			<form method="post" action="${bean.id!=null?"update":"add" }/${CUR_ACTION }">
 				<input type="hidden" name="bean.id" value="${bean.id }" />
 				<div>
-					<span>用户名:</span> <input name="bean.name" value="${bean.name }" />
+					<span>物料名:</span> <input name="bean.name" value="${bean.name }" />
 				</div>
 				<div>
 					<span>类型:</span> <select name="bean.categoryId">
@@ -34,7 +34,8 @@
 						  for ( Category category : categorylist ) {
 						    pageContext.setAttribute( "category", category );
 						%>
-						<option value="${category.id }">${category.name }</option>
+						<option ${category.id==bean.categoryId?"selected":"" }
+							value="${category.id }">${category.name }</option>
 						<%
 						  }
 						%>
@@ -47,7 +48,7 @@
 						  for ( Unit unit : unitlist ) {
 						    pageContext.setAttribute( "unit", unit );
 						%>
-						<option value="${unit.id }">${unit.name }</option>
+						<option ${unit.id==bean.unitId?"selected":"" } value="${unit.id }">${unit.name }</option>
 						<%
 						  }
 						%>
