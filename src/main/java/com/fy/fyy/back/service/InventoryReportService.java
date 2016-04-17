@@ -28,8 +28,8 @@ public class InventoryReportService extends BaseService<InventoryReport> {
     sql.append( "     THEN i.num" );
     sql.append( "     ELSE 0" );
     sql.append( "    END) AS outNum" );
-    sql.append( "  FROM inventory i," );
-    sql.append( "    material m" );
+    sql.append( "  FROM Inventory i," );
+    sql.append( "    Material m" );
     sql.append( "  WHERE i.materialId=m.id" );
     sql.append( "  GROUP BY m.name,m.categoryId,m.unitId" );
     sql.append( "  ) base " );
