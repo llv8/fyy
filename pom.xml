@@ -120,7 +120,7 @@
 					<url>http://localhost:8080/manager/text</url>
 					<server>tomcat7</server>
 					<username>admin</username>
-					<password>admin</password>
+					<password>drowpass</password>
 					<path>/${project.artifactId}</path>
 					<update>true</update>
 				</configuration>
