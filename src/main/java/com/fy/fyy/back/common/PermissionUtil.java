@@ -226,8 +226,8 @@ public class PermissionUtil {
         String childFilePath = childFile.getPath();
         if ( childFilePath.endsWith( ".class" ) ) {
 
-          childFilePath = childFilePath.substring( childFilePath.indexOf( File.pathSeparator + "classes" ) + 9, childFilePath.lastIndexOf( "." ) );
-          childFilePath = childFilePath.replace( File.pathSeparator, "." );
+          childFilePath = childFilePath.substring( childFilePath.indexOf( File.separator + "classes" ) + 9, childFilePath.lastIndexOf( "." ) );
+          childFilePath = childFilePath.replace( File.separator, "." );
           myClassName.add( childFilePath );
         }
       }
