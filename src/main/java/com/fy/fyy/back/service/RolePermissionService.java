@@ -85,4 +85,5 @@ public class RolePermissionService extends BaseService<RolePermission> {
 
     return modelNodeList;
   }
+
 }

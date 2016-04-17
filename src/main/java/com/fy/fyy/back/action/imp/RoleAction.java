@@ -8,13 +8,13 @@ import org.apache.commons.lang3.StringUtils;
 import com.fy.fyy.back.action.ActionAnnotation;
 import com.fy.fyy.back.action.ActionModel;
 import com.fy.fyy.back.action.BaseAction;
+import com.fy.fyy.back.bean.Customer;
 import com.fy.fyy.back.bean.Role;
-import com.fy.fyy.back.bean.RolePermission;
 import com.fy.fyy.back.common.Constraint;
 import com.fy.fyy.back.common.ContextUtil;
 import com.fy.fyy.back.common.Log;
 import com.fy.fyy.back.service.BaseService;
-import com.fy.fyy.back.service.RolePermissionService;
+import com.fy.fyy.back.service.CustomerService;
 import com.fy.fyy.back.service.RoleService;
 
 
@@ -67,6 +67,11 @@ public class RoleAction extends BaseAction<Role> {
     return list();
   }
 
+  public String delRolePermission() {
+    roleService.delete( bean );
+    return list();
+  }
+
   public String validAdd() {
     return validAdd2Update() ? null : addUI();
   }
@@ -113,13 +118,10 @@ public class RoleAction extends BaseAction<Role> {
   }
 
   public String validDel() {
-    //TODO: how to deal with the foriegn key error
-    RolePermissionService rolePermissionService = new RolePermissionService();
-    RolePermission searchRoleBean = new RolePermission();
-    searchRoleBean.setRoleId( bean.getId() );
-    List<RolePermission> rolePermissionList = rolePermissionService.getListByRoleId( searchRoleBean );
-    if ( !CollectionUtils.isEmpty( rolePermissionList ) ) {
-      error( "请先删除与该角色有关的角色权限！" );
+    CustomerService customerService = new CustomerService();
+    List<Customer> customerList = customerService.getBeanByRole( bean.getId() );
+    if ( !CollectionUtils.isEmpty( customerList ) ) {
+      error( "请先将该角色有关的用户权限置为空！" );
       return list();
     }
     return null;

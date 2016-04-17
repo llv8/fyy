@@ -27,7 +27,8 @@ create table Customer(
  password varchar(256) not null,
  createDate DATE,
  updateDate DATE,
- employeeId int(10)
+ employeeId int(10),
+ roleId int(10)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 insert into Customer (name,password,createDate,updateDate,employeeId) values('admin','admin',now(),now(),null);
@@ -66,15 +67,6 @@ create table RolePermission(
  id int(10) not null primary key auto_increment,
  modelId int(10) not null,
  roleId int(10) not null,
- isPerm char(1) default 0,
- CONSTRAINT FOREIGN KEY (roleId) REFERENCES Role(id)
+ isPerm char(1) default 0
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table CustomerRole(
- id int(10) not null primary key auto_increment,
- customerId int(10) not null,
- roleId int(10) not null,
- isPerm boolean,
- CONSTRAINT FOREIGN KEY (customerId) REFERENCES Customer(id),
- CONSTRAINT FOREIGN KEY (roleId) REFERENCES Role(id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;

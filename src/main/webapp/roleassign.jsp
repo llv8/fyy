@@ -25,13 +25,14 @@
 					</select>
 				</div>
 				<div>
-					<span>角色名:</span> <select name="roleId">
+					<span>角色名:</span> <select name="bean.roleId">
+						<option value=""></option>
 						<%
 						  List<Role> rolelist = (List<Role>)request.getAttribute( "rolelist" );
 						  for ( Role role : rolelist ) {
 						    pageContext.setAttribute( "role", role );
 						%>
-						<option value="${role.id }" ${role.id==roleId?"selected":"" }>${role.name}</option>
+						<option value="${role.id }" ${role.id==bean.roleId?"selected":"" }>${role.name}</option>
 						<%
 						  }
 						%>
@@ -42,7 +43,6 @@
 						onclick="location.href='list/${CUR_ACTION }'" />
 				</div>
 			</form>
-			s
 		</div>
 	</div>
 </body>

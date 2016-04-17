@@ -17,14 +17,16 @@
 
 				<%
 				  List<ModelNode> list = (List<ModelNode>)request.getSession().getAttribute( Constraint.LOGIN_PERM_ROOT );
-				  for ( ModelNode modelNode : list ) {
-				    pageContext.setAttribute( "modelNode", modelNode );
+				  if ( list != null ) {
+				    for ( ModelNode modelNode : list ) {
+				      pageContext.setAttribute( "modelNode", modelNode );
 				%>
 				<div>
 					<ex:a id="${modelNode.id }" href='javascript:;'
 						onclick='menuGo("${modelNode.href }")' text='${modelNode.text }' />
 				</div>
 				<%
+				  }
 				  }
 				%>
 

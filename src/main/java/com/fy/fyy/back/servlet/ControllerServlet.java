@@ -25,5 +25,4 @@ public class ControllerServlet extends HttpServlet {
     // invoke action
     ServletUtil.exec( req, resp, ServletUtil.getURI( req, req.getRequestURL().toString() ) );
   }
-
 }

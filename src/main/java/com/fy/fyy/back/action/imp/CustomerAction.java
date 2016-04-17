@@ -16,7 +16,6 @@ import com.fy.fyy.back.action.BaseAction;
 import com.fy.fyy.back.action.RedirectAnnotation;
 import com.fy.fyy.back.bean.BaseBean;
 import com.fy.fyy.back.bean.Customer;
-import com.fy.fyy.back.bean.CustomerRole;
 import com.fy.fyy.back.bean.Employee;
 import com.fy.fyy.back.bean.Role;
 import com.fy.fyy.back.bean.RolePermission;
@@ -26,7 +25,6 @@ import com.fy.fyy.back.common.Log;
 import com.fy.fyy.back.common.PermissionUtil;
 import com.fy.fyy.back.permission.ModelNode;
 import com.fy.fyy.back.service.BaseService;
-import com.fy.fyy.back.service.CustomerRoleService;
 import com.fy.fyy.back.service.CustomerService;
 import com.fy.fyy.back.service.EmployeeService;
 import com.fy.fyy.back.service.RolePermissionService;
@@ -42,7 +40,6 @@ public class CustomerAction extends BaseAction<Customer> {
   private EmployeeService employeeService = new EmployeeService();
   private RoleService roleService = new RoleService();
   private RolePermissionService rolePermissionService = new RolePermissionService();
-  private CustomerRoleService customerRoleService = new CustomerRoleService();
 
   public CustomerAction() {
     bean = new Customer();
@@ -59,11 +56,8 @@ public class CustomerAction extends BaseAction<Customer> {
     else {
       ContextUtil.getSessionAttrs().put( Constraint.LOGIN_USER, customer );
       if ( !bean.getName().equals( Constraint.ADMIN ) ) {
-        CustomerRole cr = new CustomerRole();
-        cr.setCustomerId( customer.getId() );
-        List<CustomerRole> customerRoleList = customerRoleService.getBeanByCustomerId( cr );
-        if ( !CollectionUtils.isEmpty( customerRoleList ) ) {
-          Integer roleId = customerRoleList.get( 0 ).getRoleId();
+        if ( customer.isId( customer.getRoleId() ) ) {
+          Integer roleId = customer.getRoleId();
           RolePermission rp = new RolePermission();
           rp.setRoleId( roleId );
           List<ModelNode> mnList = rolePermissionService.getRolePermList( rp );
@@ -78,6 +72,9 @@ public class CustomerAction extends BaseAction<Customer> {
           }
           ContextUtil.getSessionAttrs().put( Constraint.LOGIN_PERM, mnMap );
           ContextUtil.getSessionAttrs().put( Constraint.LOGIN_PERM_ROOT, menuList );
+        }
+        else {
+          logger.error( customer.getName() + " don't assign role" );
         }
       }
       else {
@@ -105,6 +102,7 @@ public class CustomerAction extends BaseAction<Customer> {
   @ActionAnnotation(name = ActionModel.CustomerQuery)
   public String list() {
     List<Customer> customerList = customerService.list( bean );
+    roleService.loadBeans( customerList, Role.class );
     ContextUtil.getReqAttrs().put( "beanList", customerList );
     ContextUtil.getReqAttrs().put( "bean", bean );
     return "/customerlist.jsp";
@@ -194,17 +192,17 @@ public class CustomerAction extends BaseAction<Customer> {
   public String roleAssign() {
     List<Role> roleList = roleService.list( new Role() );
     ContextUtil.getReqAttrs().put( "rolelist", roleList );
-    ContextUtil.getReqAttrs().put( "bean", BaseService.getBean( bean ) );
+    bean = BaseService.getBean( bean );
+    ContextUtil.getReqAttrs().put( "bean", bean );
     return "/roleassign.jsp";
   }
 
   public String roleAssignCfm() {
-    String roleIdStr = ContextUtil.getReqParam( "roleId" ).toString();
-    CustomerRole cr = new CustomerRole();
-    cr.setCustomerId( bean.getId() );
-    cr.setRoleId( Integer.valueOf( roleIdStr ) );
-    customerRoleService.insert2Update( cr );
-    ContextUtil.getReqAttrs().put( "roleId", roleIdStr );
+    Customer persistCustomer = BaseService.getBean( bean );
+    persistCustomer.setRoleId( bean.getRoleId() );
+    persistCustomer.setUpdateDate( new Date( Calendar.getInstance().getTimeInMillis() ) );
+    customerService.update( persistCustomer );
+    info( "用户权限分配成功" );
     return list();
   }
 

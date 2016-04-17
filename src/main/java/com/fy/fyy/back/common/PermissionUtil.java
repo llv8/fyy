@@ -61,6 +61,7 @@ public class PermissionUtil {
 
   private static boolean hasChildSelected( String id, Map<String, ModelNode> customerPermission ) {
     boolean result = false;
+    if ( StringUtils.isEmpty( id ) || customerPermission == null && customerPermission.size() == 0 ) return false;
     Iterator<String> iter = customerPermission.keySet().iterator();
     String modelId = id.substring( 0, id.length() - 5 );
     String mid = id.substring( id.length() - 5, id.length() - 3 );
@@ -128,16 +129,16 @@ public class PermissionUtil {
         if ( actionClazz.getSuperclass().getName().equals( "com.fy.fyy.back.action.BaseAction" ) ) {
 
           ActionAnnotation clazzAnnotation = (ActionAnnotation)actionClazz.getAnnotation( ActionAnnotation.class );
-          if ( clazzAnnotation == null ) continue;
-          ActionModel actionModel = clazzAnnotation.name();
           String clazzName = actionClazz.getSimpleName();
           String suffix = clazzName.substring( 0, clazzName.length() - 6 ) + ".Action";
-          String uri = "list/" + suffix;
-          ModelNode mn = new ModelNode( actionModel.getId().toString(), actionModel.getName(), actionModel.getParentId() == null ? null : actionModel.getParentId().toString(),
-              uri );
+          if ( clazzAnnotation != null ) {
+            ActionModel actionModel = clazzAnnotation.name();
+            String uri = "list/" + suffix;
+            ModelNode mn = new ModelNode( actionModel.getId().toString(), actionModel.getName(), actionModel.getParentId() == null ? null : actionModel.getParentId().toString(),
+                uri );
 
-          result.add( mn );
-
+            result.add( mn );
+          }
           Method[] methods = actionClazz.getDeclaredMethods();
           for ( int i = 0; i < methods.length; i++ ) {
             ActionAnnotation methodAnnotation = (ActionAnnotation)methods[i].getAnnotation( ActionAnnotation.class );

@@ -33,6 +33,7 @@
 					<th>员工名</th>
 					<th>更新日期</th>
 					<th>创建日期</th>
+					<th>权限</th>
 					<th>操作</th>
 				</tr>
 				<%
@@ -45,7 +46,7 @@
 					<td>${customer.employee.name }</td>
 					<td>${customer.updateDate }</td>
 					<td>${customer.createDate }</td>
-
+					<td>${customer.role.name }</td>
 					<td><div>
 							<span> <ex:a id="<%=ActionModel.CustomerUpdate.getId() %>"
 									href='updateUI/${CUR_ACTION }?bean.id=${customer.id }'
@@ -55,7 +56,7 @@
 									onclick='delCfm("${CUR_ACTION }","${customer.id}")'
 									text='<%="["+ActionModel.CustomerDel.getName()+"]" %>' /></span> <span>
 								<ex:a id="<%=ActionModel.CustomerRoleAssign.getId() %>"
-									href='roleAssign/${CUR_ACTION }?bean.id=${customer.id}'
+									href='roleAssign/${CUR_ACTION }?bean.id=${customer.id}&bean.roleId=${customer.roleId }'
 									text='<%="["+ActionModel.CustomerRoleAssign.getName()+"]" %>' />
 							</span>
 

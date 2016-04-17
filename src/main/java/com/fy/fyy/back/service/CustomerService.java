@@ -75,4 +75,21 @@ public class CustomerService extends BaseService<Customer> {
     return list;
   }
 
+  public List<Customer> getBeanByRole( int roleId ) {
+    Customer searchBean = new Customer();
+    searchBean.setRoleId( roleId );
+    List<Customer> list = getList( searchBean, new QuerySqlStr<Customer>() {
+
+      @Override
+      public String get( Customer searchBean ) {
+        StringBuffer sb = new StringBuffer();
+        sb.append( " and roleId=?" );
+        searchBean.getQueryParams().clear();
+        searchBean.getQueryParams().add( searchBean.getRoleId() );
+        return sb.toString();
+      }
+    } );
+    return list;
+  }
+
 }

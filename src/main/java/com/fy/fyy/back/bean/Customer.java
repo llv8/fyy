@@ -11,6 +11,8 @@ public class Customer extends BaseBean {
   private Date updateDate;
   private Employee employee;
   private Integer employeeId;
+  private Role role;
+  private Integer roleId;
 
   public String getName() {
     return name;
@@ -59,6 +61,22 @@ public class Customer extends BaseBean {
   public void setEmployeeId( Integer employeeId ) {
     this.employeeId = employeeId;
     this.employee = CachedBean.get().getValue( BaseBean.getInstance( Employee.class, employeeId ) );
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole( Role role ) {
+    this.role = role;
+  }
+
+  public Integer getRoleId() {
+    return roleId;
+  }
+
+  public void setRoleId( Integer roleId ) {
+    this.roleId = roleId;
   }
 
 }
