@@ -61,6 +61,7 @@ public class PermissionUtil {
 
   private static boolean hasChildSelected( String id, Map<String, ModelNode> customerPermission ) {
     boolean result = false;
+    
     if ( StringUtils.isEmpty( id ) || customerPermission == null && customerPermission.size() == 0 ) return false;
     Iterator<String> iter = customerPermission.keySet().iterator();
     String modelId = id.substring( 0, id.length() - 5 );
